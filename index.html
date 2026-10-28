@@ -49,12 +49,49 @@
           </button>
         </div>
 
-        <a href="#simulator" class="btn btn-primary" id="navCtaBtn" data-i18n="nav.cta">
+        <a href="#simulator" class="btn btn-primary nav-cta-desktop" id="navCtaBtn" data-i18n="nav.cta">
+          Probar Simulador
+        </a>
+
+        <!-- Mobile Hamburger Button (iPhone / Mobile) -->
+        <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir Menú de Navegación" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Dropdown Drawer (Optimized for iPhone 16 Plus & Smartphones) -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
+    <div class="mobile-nav-inner">
+      <nav class="mobile-nav-links">
+        <a href="#benefits" class="mobile-nav-link" data-i18n="nav.benefits">Ventajas Comerciales</a>
+        <a href="#security" class="mobile-nav-link" data-i18n="nav.security">Seguridad Blindada</a>
+        <a href="#simulator" class="mobile-nav-link" data-i18n="nav.simulator">Simulador Sandbox</a>
+        <a href="#batch" class="mobile-nav-link" id="mobileNavBatchLink" data-i18n="nav.batch">Generador Masivo & PDF / Excel</a>
+        <a href="#architecture" class="mobile-nav-link" id="mobileNavArchLink" data-i18n="nav.architecture">Arquitectura API</a>
+      </nav>
+
+      <div class="mobile-nav-divider"></div>
+
+      <div class="mobile-nav-footer">
+        <div class="lang-toggle" role="group" aria-label="Language selector mobile" style="justify-content: center; margin-bottom: 0.75rem;">
+          <button type="button" class="lang-btn active" id="mobileLangEsBtn" onclick="window.setLanguage('es')">
+            <span>🇪🇸</span> ES
+          </button>
+          <button type="button" class="lang-btn" id="mobileLangEnBtn" onclick="window.setLanguage('en')">
+            <span>🇺🇸</span> EN
+          </button>
+        </div>
+
+        <a href="#simulator" class="btn btn-primary" id="mobileNavCtaBtn" data-i18n="nav.cta" style="width: 100%; justify-content: center;">
           Probar Simulador
         </a>
       </div>
     </div>
-  </header>
+  </div>
 
   <main>
     <!-- HERO SECTION -->
@@ -673,6 +710,41 @@ Content-Type: application/json
             <div class="form-group">
               <label for="brandNameInput" data-i18n="batchModal.brandName">Nombre de la Marca / Cliente</label>
               <input type="text" id="brandNameInput" placeholder="Ej. Refrescos Andina, Banco Continental, Supertiendas..." value="Refrescos Andina">
+            </div>
+
+            <div class="form-group">
+              <label data-i18n="batchModal.brandLogo">Logotipo de la Empresa / Marca</label>
+              <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <div id="brandLogoPreviewBox" style="width: 58px; height: 58px; border-radius: 12px; background: #0B192C; display: flex; align-items: center; justify-content: center; border: 2px solid var(--slate-300); overflow: hidden; padding: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                  <img id="currentBrandLogoImg" src="" style="width: 100%; height: 100%; object-fit: contain; display: none;" alt="Logo Preview" />
+                  <div id="defaultBrandLogoIcon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                  </div>
+                </div>
+
+                <div style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 0.5rem;">
+                  <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <label for="brandLogoFileInput" class="btn btn-secondary" style="cursor: pointer; font-size: 0.8rem; padding: 0.45rem 0.85rem; color: var(--slate-800); border-color: var(--slate-300); margin: 0;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      <span data-i18n="batchModal.brandLogoUpload">Subir archivo de Logo</span>
+                    </label>
+                    <input type="file" id="brandLogoFileInput" accept="image/*" style="display: none;">
+                    
+                    <button type="button" class="btn btn-secondary" id="btnRemoveLogo" style="font-size: 0.75rem; padding: 0.45rem 0.65rem; color: #DC2626; border-color: #FECACA; display: none;">
+                      Quitar Logo
+                    </button>
+                  </div>
+
+                  <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.725rem; color: var(--slate-500);" data-i18n="batchModal.brandLogoPresets">Logos predefinidos:</span>
+                    <button type="button" class="logo-preset-btn active" data-preset="shield" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--cyan-500); background: rgba(14, 165, 233, 0.1); color: var(--cyan-600); font-weight: 600; cursor: pointer;">🛡️ Tech</button>
+                    <button type="button" class="logo-preset-btn" data-preset="drinks" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--slate-300); background: #FFF; color: var(--slate-700); cursor: pointer;">🥤 Bebidas</button>
+                    <button type="button" class="logo-preset-btn" data-preset="retail" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--slate-300); background: #FFF; color: var(--slate-700); cursor: pointer;">🛒 Retail</button>
+                    <button type="button" class="logo-preset-btn" data-preset="bank" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--slate-300); background: #FFF; color: var(--slate-700); cursor: pointer;">💳 Banco</button>
+                    <button type="button" class="logo-preset-btn" data-preset="star" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--slate-300); background: #FFF; color: var(--slate-700); cursor: pointer;">⭐ Promo</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="form-group">

@@ -278,6 +278,146 @@ h1, h2, h3, h4, h5, h6 {
 .nav-actions {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+}
+
+/* Mobile Hamburger Button & Drawer Navigation */
+.mobile-menu-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 60;
+  transition: all var(--transition-fast);
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.mobile-menu-btn.is-active .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-btn.is-active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-btn.is-active .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (min-width: 1024px) {
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-cta-desktop {
+    display: none !important;
+  }
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 4.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(11, 25, 44, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 49;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-drawer.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@media (min-width: 1024px) {
+  .mobile-nav-drawer {
+    display: none !important;
+  }
+}
+
+.mobile-nav-inner {
+  padding: 1.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.95rem 1.15rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: var(--cyan-500);
+  color: var(--cyan-400);
+}
+
+.mobile-nav-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+.mobile-nav-footer {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
@@ -1466,43 +1606,51 @@ dialog.custom-modal::backdrop {
 }
 
 .print-ticket-brand {
-  font-size: 0.7rem;
+  font-size: 0.725rem;
   font-weight: 800;
   text-transform: uppercase;
   color: var(--slate-900);
-  margin-bottom: 0.25rem;
-}
-
-.print-ticket-qr {
-  width: 90px;
-  height: 90px;
-  margin: 0.35rem 0;
+  margin-bottom: 0.2rem;
   display: flex;
   align-items: center;
+  gap: 0.35rem;
   justify-content: center;
 }
 
-.print-ticket-qr canvas {
-  width: 100% !important;
-  height: 100% !important;
+.print-ticket-brand-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.print-ticket-brand-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #0284C7;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
 }
 
 .print-ticket-code {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #0F172A;
   background: var(--slate-100);
-  padding: 0.15rem 0.35rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 4px;
+  border: 1px solid var(--slate-200);
+  width: 100%;
 }
 
 .print-ticket-scratch {
-  font-size: 0.55rem;
-  color: #64748B;
-  margin-top: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #475569;
+  margin-top: 0.3rem;
   border-top: 1px dotted #CBD5E1;
-  padding-top: 0.2rem;
+  padding-top: 0.25rem;
   width: 100%;
 }
 

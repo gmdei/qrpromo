@@ -78,14 +78,48 @@ const mockTokenDatabase = {
 };
 
 /**
+ * Registra un lote de tokens generados masivamente en la base de datos de validación
+ * @param {Array} tokens - Lista de tokens creados
+ * @param {string} brandName - Nombre del cliente/marca
+ */
+export function registerBatchInDatabase(tokens, brandName) {
+  if (!tokens || !Array.isArray(tokens)) return;
+  const brand = brandName || 'Promoción';
+
+  tokens.forEach((t) => {
+    const cleanToken = t.token.toUpperCase().trim();
+    mockTokenDatabase[cleanToken] = {
+      token: cleanToken,
+      status: 'VALID',
+      isWinner: !!t.isWinner,
+      prize: t.isWinner ? {
+        id: `PRZ-${t.id}-${Date.now().toString(36).toUpperCase()}`,
+        title: `Bono Digital de Compras ${brand} ($150 USD) + Kit Oficial`,
+        titleEn: `Digital Shopping Voucher ${brand} ($150 USD) + Official Kit`,
+        category: 'Premio Instantáneo de Campaña',
+        categoryEn: 'Instant Campaign Prize',
+        valueEstimate: '$150 USD',
+        claimDeadline: '2026-12-31T23:59:59Z',
+        securityVerificationCode: `VERIF-${t.id}-${t.hash ? t.hash.slice(0, 8) : 'SEC'}`
+      } : null,
+      messageEs: `Código auténtico verificado para ${brand}. Acumulas 100 puntos y participas en el gran sorteo final de campaña.`,
+      messageEn: `Authentic code verified for ${brand}. You earn 100 points and qualify for the final grand draw.`,
+      redeemed: false,
+      batchId: `BATCH-${brand.toUpperCase().replace(/[^A-Z0-9]/g, '')}-2026`,
+      createdAt: t.createdAt || new Date().toISOString()
+    };
+  });
+}
+
+/**
  * Normaliza cualquier formato de token de entrada
- * (ej. 'WIN-9021', 'shield-win-9021', 'https://shield.com?token=WIN-9021')
+ * Soporta tokens puros, URLs con ?token=, URLs completas o hash fragments.
  */
 export function normalizeToken(rawInput) {
   if (!rawInput) return '';
-  let clean = rawInput.trim();
+  let clean = String(rawInput).trim();
   
-  // Si el usuario pega una URL completa:
+  // Si contiene URL completa o parámetro token:
   if (clean.includes('token=')) {
     try {
       const url = new URL(clean, window.location.origin);
@@ -96,7 +130,15 @@ export function normalizeToken(rawInput) {
     }
   }
 
-  clean = clean.toUpperCase();
+  // Quitar prefijos de protocolo o rutas residuales si quedaron
+  clean = clean.replace(/^[a-z]+:\/\/[^/]+/i, '');
+  clean = clean.replace(/^[/?#]+/, '');
+  if (clean.includes('token=')) {
+    clean = clean.split('token=')[1].split('&')[0];
+  }
+
+  clean = clean.toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+
   if (!clean.startsWith('SHIELD-') && (clean.startsWith('WIN-') || clean.startsWith('TRY-') || clean.startsWith('ERR-'))) {
     clean = `SHIELD-${clean}`;
   }
@@ -168,7 +210,36 @@ export async function validateToken(rawToken) {
       const traceId = `TRX-${Math.floor(1000 + Math.random() * 9000)}-${Date.now().toString(36).toUpperCase()}`;
       const signature = generateMockSignature(token, timestampIso);
 
-      const record = mockTokenDatabase[token];
+      let record = mockTokenDatabase[token];
+
+      // Auto-reconocimiento inteligente si el token coincide con formato de campaña (ej. EMPRESA-XYZ-0001):
+      if (!record && token && /^[A-Z0-9]{2,16}-[A-Z0-9]{2,10}-[0-9]{2,8}$/.test(token)) {
+        const parts = token.split('-');
+        const prefix = parts[0];
+        const seqNum = parseInt(parts[parts.length - 1], 10) || 1;
+        const isWinner = (seqNum % 4 === 0); // 1 de cada 4 es ganador
+        mockTokenDatabase[token] = {
+          token,
+          status: 'VALID',
+          isWinner,
+          prize: isWinner ? {
+            id: `PRZ-${seqNum}`,
+            title: `Bono Digital de Compras ${prefix} ($100 USD)`,
+            titleEn: `Digital Shopping Voucher ${prefix} ($100 USD)`,
+            category: 'Premio Oficial de Campaña',
+            categoryEn: 'Official Campaign Prize',
+            valueEstimate: '$100 USD',
+            claimDeadline: '2026-12-31T23:59:59Z',
+            securityVerificationCode: `SEC-${token}`
+          } : null,
+          messageEs: `Código auténtico registrado para ${prefix}. Acumulas puntos y participas en el gran sorteo final.`,
+          messageEn: `Authentic code registered for ${prefix}. You earn points and enter the grand sweepstakes.`,
+          redeemed: false,
+          batchId: `BATCH-${prefix}-AUTO`,
+          createdAt: new Date().toISOString()
+        };
+        record = mockTokenDatabase[token];
+      }
 
       if (!token) {
         resolve({

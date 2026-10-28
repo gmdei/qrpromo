@@ -13,6 +13,7 @@ import {
   redeemPrize, 
   resetMockDatabase, 
   normalizeToken,
+  registerBatchInDatabase,
   API_CONFIG 
 } from './services/mockValidatorService.js';
 import confetti from 'canvas-confetti';
@@ -66,6 +67,7 @@ function startApp() {
   renderHeroMockupQR();
   renderPresetQRs();
   initUrlQueryHandler();
+  initMobileNav();
 
   // Exponer utilidades para pruebas y scripts de demostración
   window.triggerValidation = triggerValidation;
@@ -1002,9 +1004,82 @@ function initUrlQueryHandler() {
 }
 
 // ============================================================================
+// Menú de Navegación Móvil (Optimizado para iPhone 16 Plus y Smartphones)
+// ============================================================================
+function initMobileNav() {
+  const menuBtn = document.getElementById('mobileMenuBtn');
+  const drawer = document.getElementById('mobileNavDrawer');
+  const batchModal = document.getElementById('batchModal');
+  const archModal = document.getElementById('archModal');
+
+  function toggleMenu(forceClose = false) {
+    if (!menuBtn || !drawer) return;
+    const shouldOpen = forceClose ? false : !drawer.classList.contains('is-open');
+    if (shouldOpen) {
+      drawer.classList.add('is-open');
+      menuBtn.classList.add('is-active');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    } else {
+      drawer.classList.remove('is-open');
+      menuBtn.classList.remove('is-active');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  }
+
+  menuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Enlaces de navegación dentro del drawer móvil
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.id;
+      const href = link.getAttribute('href');
+
+      if (id === 'mobileNavBatchLink') {
+        e.preventDefault();
+        toggleMenu(true);
+        if (window.openBatchModal) window.openBatchModal();
+        else batchModal?.showModal();
+        return;
+      }
+
+      if (id === 'mobileNavArchLink') {
+        e.preventDefault();
+        toggleMenu(true);
+        archModal?.showModal();
+        return;
+      }
+
+      if (href && href.startsWith('#')) {
+        toggleMenu(true);
+      }
+    });
+  });
+
+  document.getElementById('mobileNavCtaBtn')?.addEventListener('click', () => {
+    toggleMenu(true);
+  });
+}
+
+// ============================================================================
 // Centro de Operaciones: Generador Masivo, Excel/CSV y Personalización
 // ============================================================================
 let currentGeneratedBatch = [];
+let activeCustomLogoUrl = null;
+
+const logoPresets = {
+  shield: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+  drinks: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.2"><path d="M8 2h8v4l-2 2v12a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V8L4 6V2h4z"/><line x1="6" y1="12" x2="14" y2="12"/></svg>`,
+  retail: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  bank: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+  star: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+};
 
 function initBatchOperations() {
   const batchModal = document.getElementById('batchModal');
@@ -1014,7 +1089,6 @@ function initBatchOperations() {
   btnNavBatch?.addEventListener('click', (e) => {
     e.preventDefault();
     batchModal?.showModal();
-    // Pre-generar un lote inicial si está vacío
     if (currentGeneratedBatch.length === 0) {
       generateBatchTokens('ANDINA', 24);
     }
@@ -1023,7 +1097,9 @@ function initBatchOperations() {
   window.openBatchModal = () => {
     batchModal?.showModal();
     if (currentGeneratedBatch.length === 0) {
-      generateBatchTokens('ANDINA', 24);
+      const brand = document.getElementById('brandNameInput')?.value.trim() || 'ANDINA';
+      const prefix = brand.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase() || 'ANDINA';
+      generateBatchTokens(prefix, 24);
     }
   };
 
@@ -1056,7 +1132,7 @@ function initBatchOperations() {
     });
   });
 
-  // Tab 1: Theming Engine
+  // Tab 1: Theming & Logo Customization Engine
   const colorPresets = document.querySelectorAll('.color-preset-btn');
   const customColorInput = document.getElementById('brandCustomColor');
   let selectedPrimaryColor = '#0B192C';
@@ -1075,6 +1151,79 @@ function initBatchOperations() {
     colorPresets.forEach(b => b.classList.remove('active'));
   });
 
+  // Logo Customizer controls
+  const brandLogoFileInput = document.getElementById('brandLogoFileInput');
+  const brandLogoPreviewImg = document.getElementById('currentBrandLogoImg');
+  const defaultBrandLogoIcon = document.getElementById('defaultBrandLogoIcon');
+  const btnRemoveLogo = document.getElementById('btnRemoveLogo');
+  const brandNameInput = document.getElementById('brandNameInput');
+  const batchPrefixInput = document.getElementById('batchPrefixInput');
+
+  // Auto-sincronizar prefijo de campaña según el nombre de la empresa
+  brandNameInput?.addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    if (val && batchPrefixInput) {
+      const autoPrefix = val.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase();
+      batchPrefixInput.value = autoPrefix || 'PROMO';
+    }
+  });
+
+  // Subir archivo de logo
+  brandLogoFileInput?.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        activeCustomLogoUrl = loadEvt.target.result;
+        if (brandLogoPreviewImg && defaultBrandLogoIcon) {
+          brandLogoPreviewImg.src = activeCustomLogoUrl;
+          brandLogoPreviewImg.style.display = 'block';
+          defaultBrandLogoIcon.style.display = 'none';
+        }
+        if (btnRemoveLogo) btnRemoveLogo.style.display = 'inline-block';
+        document.querySelectorAll('.logo-preset-btn').forEach(b => b.classList.remove('active'));
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Preset Logos de Industria
+  document.querySelectorAll('.logo-preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.logo-preset-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.borderColor = 'var(--slate-300)';
+        b.style.background = '#FFF';
+        b.style.fontWeight = 'normal';
+      });
+      btn.classList.add('active');
+      btn.style.borderColor = 'var(--cyan-500)';
+      btn.style.background = 'rgba(14, 165, 233, 0.1)';
+      btn.style.fontWeight = '600';
+
+      const presetKey = btn.getAttribute('data-preset');
+      if (defaultBrandLogoIcon && brandLogoPreviewImg) {
+        defaultBrandLogoIcon.innerHTML = logoPresets[presetKey] || logoPresets.shield;
+        defaultBrandLogoIcon.style.display = 'flex';
+        brandLogoPreviewImg.style.display = 'none';
+        activeCustomLogoUrl = null;
+      }
+      if (btnRemoveLogo) btnRemoveLogo.style.display = 'none';
+    });
+  });
+
+  btnRemoveLogo?.addEventListener('click', () => {
+    activeCustomLogoUrl = null;
+    if (brandLogoPreviewImg && defaultBrandLogoIcon) {
+      brandLogoPreviewImg.style.display = 'none';
+      defaultBrandLogoIcon.style.display = 'flex';
+      defaultBrandLogoIcon.innerHTML = logoPresets.shield;
+    }
+    btnRemoveLogo.style.display = 'none';
+    if (brandLogoFileInput) brandLogoFileInput.value = '';
+  });
+
+  // Botón Aplicar Tema e Identidad de Marca
   document.getElementById('btnApplyTheme')?.addEventListener('click', () => {
     const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
     const headline = document.getElementById('headlineCustomInput')?.value.trim();
@@ -1082,6 +1231,17 @@ function initBatchOperations() {
     // Actualizar nombre de marca en navbar
     const brandTitleEl = document.querySelector('.brand-text h1');
     if (brandTitleEl) brandTitleEl.textContent = brandName;
+
+    // Actualizar logotipo en Navbar y Hero
+    const navbarLogoEl = document.querySelector('.brand-logo-icon');
+    if (navbarLogoEl) {
+      if (activeCustomLogoUrl) {
+        navbarLogoEl.innerHTML = `<img src="${activeCustomLogoUrl}" alt="${brandName}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;" />`;
+      } else {
+        const activePreset = document.querySelector('.logo-preset-btn.active')?.getAttribute('data-preset') || 'shield';
+        navbarLogoEl.innerHTML = logoPresets[activePreset] || logoPresets.shield;
+      }
+    }
 
     // Actualizar color primario CSS tokens
     document.documentElement.style.setProperty('--navy-dark', selectedPrimaryColor);
@@ -1093,6 +1253,14 @@ function initBatchOperations() {
       const heroHighlight = document.querySelector('.hero-gradient-text');
       if (heroHighlight) heroHighlight.textContent = headline;
     }
+
+    // Sincronizar prefijo de campaña y regenerar códigos con el nuevo nombre de la empresa
+    const autoPrefix = brandName.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase() || 'PROMO';
+    const prefixInput = document.getElementById('batchPrefixInput');
+    if (prefixInput) prefixInput.value = autoPrefix;
+
+    const qty = parseInt(document.getElementById('batchQtySelect')?.value || '24', 10);
+    generateBatchTokens(autoPrefix, qty);
 
     const successMsg = document.getElementById('themeSuccessMsg');
     if (successMsg) {
@@ -1123,7 +1291,8 @@ function initBatchOperations() {
 }
 
 function generateBatchTokens(prefix, count) {
-  const cleanPrefix = (prefix || 'PROMO').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
+  const cleanPrefix = (prefix || brandName.replace(/[^A-Za-z0-9]/g, '').slice(0, 8) || 'PROMO').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const tokens = [];
   const baseScanUrl = `${window.location.origin}${window.location.pathname}`;
 
@@ -1131,8 +1300,8 @@ function generateBatchTokens(prefix, count) {
     const randomHex = Math.random().toString(36).substring(2, 7).toUpperCase();
     const token = `${cleanPrefix}-${randomHex}-${String(i).padStart(4, '0')}`;
     const scanUrl = `${baseScanUrl}?token=${token}`;
-    const isWinner = (i % 6 === 0); // 1 de cada 6 es ganador
-    const prizeType = isWinner ? 'PREMIADO (Categoría A)' : 'PARTICIPACIÓN VÁLIDA';
+    const isWinner = (i % 5 === 0); // 1 de cada 5 es ganador
+    const prizeType = isWinner ? `PREMIADO (${brandName})` : 'PARTICIPACIÓN VÁLIDA';
     const hash = `SHA256-${Math.random().toString(16).substring(2, 10).toUpperCase()}${Date.now().toString(16).toUpperCase()}`;
 
     tokens.push({
@@ -1147,6 +1316,11 @@ function generateBatchTokens(prefix, count) {
   }
 
   currentGeneratedBatch = tokens;
+
+  // REGISTRAR INMEDIATAMENTE EN LA BASE DE DATOS DE VALIDACIÓN
+  // Esto garantiza que al escanearlos la API los reconozca al 100% de inmediato.
+  registerBatchInDatabase(tokens, brandName);
+
   renderBatchTable(tokens);
 }
 
@@ -1171,7 +1345,9 @@ function renderBatchTable(tokens) {
 
 function downloadBatchCsv() {
   if (!currentGeneratedBatch || currentGeneratedBatch.length === 0) {
-    generateBatchTokens('ANDINA', 24);
+    const brandName = document.getElementById('brandNameInput')?.value.trim() || 'ANDINA';
+    const autoPrefix = brandName.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase() || 'ANDINA';
+    generateBatchTokens(autoPrefix, 24);
   }
 
   const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'PROMO';
@@ -1207,7 +1383,7 @@ async function renderPrintSheet(tokens) {
   const container = document.getElementById('printSheetGrid');
   if (!container) return;
 
-  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
 
   container.innerHTML = `
     <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--slate-500);">
@@ -1226,12 +1402,16 @@ async function renderPrintSheet(tokens) {
 
       return `
         <div class="print-ticket-item">
-          <div class="print-ticket-brand">${brandName}</div>
+          <div class="print-ticket-brand">
+            ${activeCustomLogoUrl ? `<img src="${activeCustomLogoUrl}" class="print-ticket-brand-logo" alt="Logo" />` : ''}
+            <span>${brandName}</span>
+          </div>
           <div class="print-ticket-qr">
             <img src="${qrDataUrl}" alt="${t.token}" width="90" height="90" loading="lazy" />
           </div>
+          <div class="print-ticket-brand-badge">${brandName.toUpperCase()}</div>
           <div class="print-ticket-code">${t.token}</div>
-          <div class="print-ticket-scratch">Raspe o escanee para validar</div>
+          <div class="print-ticket-scratch">Escanee para validar</div>
         </div>
       `;
     });
@@ -1250,13 +1430,14 @@ async function renderPrintSheet(tokens) {
  */
 async function downloadDirectPdf() {
   if (!currentGeneratedBatch || currentGeneratedBatch.length === 0) {
-    const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'ANDINA';
+    const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
+    const autoPrefix = brandName.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase() || 'ANDINA';
     const qty = parseInt(document.getElementById('batchQtySelect')?.value || '24', 10);
-    generateBatchTokens(prefix, qty);
+    generateBatchTokens(autoPrefix, qty);
   }
 
   const tokens = currentGeneratedBatch;
-  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
   const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'PROMO';
   const btn = document.getElementById('btnDownloadPdfAction');
   const statusMsg = document.getElementById('pdfStatusMsg');
@@ -1336,7 +1517,7 @@ async function downloadDirectPdf() {
       doc.roundedRect(x, y, ticketWidth, ticketHeight, 1.5, 1.5, 'S');
       doc.setLineDashPattern([], 0);
 
-      // Marca o Nombre del cliente
+      // Marca o Nombre del cliente en cabecera del boleto
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(15, 23, 42);
@@ -1356,26 +1537,32 @@ async function downloadDirectPdf() {
       const qrY = y + 7.5;
       doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
 
+      // Nombre de la Empresa encima del código
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6.5);
+      doc.setTextColor(2, 132, 199);
+      doc.text(truncatedBrand.toUpperCase(), x + ticketWidth / 2, y + 41, { align: 'center' });
+
       // Caja del Código Token
       doc.setFillColor(241, 245, 249);
-      doc.roundedRect(x + 5, y + 40, ticketWidth - 10, 5.5, 1, 1, 'F');
+      doc.roundedRect(x + 5, y + 42.5, ticketWidth - 10, 5.2, 1, 1, 'F');
 
       doc.setFont('courier', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(11, 25, 44);
-      doc.text(token.token, x + ticketWidth / 2, y + 43.8, { align: 'center' });
+      doc.text(token.token, x + ticketWidth / 2, y + 46.2, { align: 'center' });
 
-      // Instrucción de raspe
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(5.8);
-      doc.setTextColor(100, 116, 139);
-      doc.text('Raspe o escanee para validar', x + ticketWidth / 2, y + 49.5, { align: 'center' });
+      // Instrucción requerida: "Escanee para validar"
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6);
+      doc.setTextColor(71, 85, 105);
+      doc.text('Escanee para validar', x + ticketWidth / 2, y + 51.5, { align: 'center' });
 
       // Firma forense / anti-falsificación
       doc.setFont('courier', 'normal');
       doc.setFontSize(5);
       doc.setTextColor(148, 163, 184);
-      doc.text(`ID #${token.id} · ${token.hash.slice(0, 14)}`, x + ticketWidth / 2, y + 54, { align: 'center' });
+      doc.text(`ID #${token.id} · ${token.hash.slice(0, 14)}`, x + ticketWidth / 2, y + 55, { align: 'center' });
     }
 
     // Descargar archivo PDF generado
@@ -1407,16 +1594,17 @@ async function downloadDirectPdf() {
  */
 async function openCleanPrintWindow() {
   if (!currentGeneratedBatch || currentGeneratedBatch.length === 0) {
-    generateBatchTokens('ANDINA', 24);
+    const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
+    const autoPrefix = brandName.replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase() || 'ANDINA';
+    generateBatchTokens(autoPrefix, 24);
   }
 
   const tokens = currentGeneratedBatch;
-  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'Refrescos Andina';
   const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'PROMO';
 
   const printWindow = window.open('', '_blank', 'width=950,height=800');
   if (!printWindow) {
-    // Si el navegador bloquea la ventana emergente, invoca el diálogo de impresión normal
     window.print();
     return;
   }
@@ -1474,19 +1662,29 @@ async function openCleanPrintWindow() {
           flex-direction: column;
           align-items: center;
           justify-content: space-between;
-          height: 185px;
+          height: 195px;
         }
         .ticket-brand {
           font-size: 7.5pt;
           font-weight: 800;
           text-transform: uppercase;
           color: #0F172A;
+          display: flex;
+          align-items: center;
+          gap: 4px;
         }
         .ticket-qr img {
           width: 95px;
           height: 95px;
           display: block;
           margin: 4px auto;
+        }
+        .ticket-brand-badge {
+          font-size: 6.5pt;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: #0284C7;
+          margin-bottom: 2px;
         }
         .ticket-code {
           font-family: monospace;
@@ -1496,13 +1694,15 @@ async function openCleanPrintWindow() {
           padding: 2px 6px;
           border-radius: 3px;
           color: #0B192C;
+          width: 90%;
         }
         .ticket-scratch {
-          font-size: 6.5pt;
-          color: #64748B;
+          font-size: 7pt;
+          font-weight: bold;
+          color: #475569;
           border-top: 1px dotted #CBD5E1;
           padding-top: 3px;
-          margin-top: 2px;
+          margin-top: 3px;
           width: 100%;
         }
         .ticket-hash {
@@ -1570,12 +1770,16 @@ async function openCleanPrintWindow() {
       const ticketEl = printWindow.document.createElement('div');
       ticketEl.className = 'ticket';
       ticketEl.innerHTML = `
-        <div class="ticket-brand">${brandName}</div>
+        <div class="ticket-brand">
+          ${activeCustomLogoUrl ? `<img src="${activeCustomLogoUrl}" style="width: 14px; height: 14px; object-fit: contain;" />` : ''}
+          <span>${brandName}</span>
+        </div>
         <div class="ticket-qr">
           <img src="${qrDataUrl}" alt="${t.token}" />
         </div>
+        <div class="ticket-brand-badge">${brandName.toUpperCase()}</div>
         <div class="ticket-code">${t.token}</div>
-        <div class="ticket-scratch">Raspe o escanee para validar</div>
+        <div class="ticket-scratch">Escanee para validar</div>
         <div class="ticket-hash">ID #${t.id} · ${t.hash.slice(0, 14)}</div>
       `;
       gridContainer.appendChild(ticketEl);

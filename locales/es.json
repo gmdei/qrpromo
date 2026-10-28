@@ -239,8 +239,12 @@
     "btnGenerate": "Generar Lote Criptográfico",
     "btnExportCsv": "Descargar Listado en Excel / CSV (VDP Industrial)",
     "btnOpenPrintView": "Generar Planilla de Impresión / PDF con QRs",
+    "btnDownloadPdf": "Descargar Planilla PDF Directa (.pdf)",
+    "btnDownloadPdfLoading": "Generando PDF Vectorial...",
+    "btnPrintWindow": "Imprimir en Papel / Vista Previa",
+    "pdfNotice": "El archivo PDF incluye páginas carta automáticas (12 boletos por hoja) con marcas de corte y códigos QR vectoriales nítidos a 300 DPI.",
     "csvExplainer": "Estándar universal VDP (Variable Data Printing). Compatible con prensas digitales HP Indigo, Fiery, Domino, Mark Andy e impresoras de etiquetas.",
-    "printExplainer": "Cuadrícula optimizada para corte en pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida de 300 DPI."
+    "printExplainer": "Cuadrícula de alta definición optimizada para pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida a 300 DPI."
   },
   "footer": {
     "brandDesc": "Plataforma corporativa de sorteos inteligentes, promociones dinámicas y validación criptográfica de códigos QR para consumo masivo y retail.",

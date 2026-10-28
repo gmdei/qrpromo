@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
-    "qrcode": "^1.5.4",
-    "html5-qrcode": "^2.3.8"
+    "html5-qrcode": "^2.3.8",
+    "jspdf": "^4.2.1",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "vite": "^6.2.0"

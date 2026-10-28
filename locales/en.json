@@ -239,8 +239,12 @@
     "btnGenerate": "Generate Cryptographic Batch",
     "btnExportCsv": "Download Excel / CSV File (Industrial VDP)",
     "btnOpenPrintView": "Generate Print Sheet / PDF with QRs",
+    "btnDownloadPdf": "Download Direct PDF Sheet (.pdf)",
+    "btnDownloadPdfLoading": "Generating Vector PDF...",
+    "btnPrintWindow": "Print on Paper / Clean Preview",
+    "pdfNotice": "Direct PDF generation creates automated Letter/A4 pages (12 tickets per sheet) with cut guides and crisp 300 DPI vector QR codes.",
     "csvExplainer": "Universal Variable Data Printing (VDP) standard. Fully compatible with HP Indigo, Fiery, Domino, Mark Andy, and roll label presses.",
-    "printExplainer": "Grid layout optimized for Letter/A4 sticker sheets, scratch-off cards, or raffle tickets in sharp 300 DPI vector clarity."
+    "printExplainer": "High-definition grid layout optimized for Letter/A4 sticker sheets, scratch-off cards, or raffle tickets in sharp 300 DPI vector clarity."
   },
   "footer": {
     "brandDesc": "Enterprise platform for intelligent sweepstakes, dynamic promotions, and cryptographic QR code validation for CPG, retail, and corporate brands.",

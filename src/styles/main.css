@@ -1506,32 +1506,113 @@ dialog.custom-modal::backdrop {
   width: 100%;
 }
 
+.print-sheet-scrollbox {
+  max-height: 440px;
+  overflow-y: auto;
+  background: var(--slate-100);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px dashed var(--slate-300);
+}
+
+.print-ticket-qr img {
+  width: 90px;
+  height: 90px;
+  display: block;
+  margin: 0 auto;
+}
+
 /* Print Media Query */
 @media print {
-  body * {
-    visibility: hidden;
+  @page {
+    size: letter portrait;
+    margin: 12mm 10mm;
   }
-  #printSheetWrapper, #printSheetWrapper * {
-    visibility: visible;
+
+  html, body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  #printSheetWrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+
+  body > *:not(#batchModal) {
+    display: none !important;
+  }
+
+  dialog#batchModal {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
     border: none !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+  }
+
+  .modal-box {
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #FFFFFF !important;
+  }
+
+  .modal-header,
+  .simulator-tabs-nav,
+  #batchPaneTheme,
+  #batchPaneCsv,
+  #batchPanePrint > div:first-child,
+  #batchPanePrint > div:nth-child(2) {
+    display: none !important;
+  }
+
+  .modal-body {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #batchPanePrint {
+    display: block !important;
+  }
+
+  .print-sheet-scrollbox {
+    max-height: none !important;
+    overflow: visible !important;
     background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
   }
+
   .print-sheet-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 0.5rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10mm 6mm !important;
+    page-break-inside: auto;
   }
+
   .print-ticket-item {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
     border: 1px dashed #64748B !important;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    padding: 0.6rem !important;
+  }
+
+  .print-ticket-qr img {
+    width: 100px !important;
+    height: 100px !important;
   }
 }
 

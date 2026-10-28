@@ -18,6 +18,7 @@ import {
 import confetti from 'canvas-confetti';
 import QRCode from 'qrcode';
 import { Html5Qrcode } from 'html5-qrcode';
+import { jsPDF } from 'jspdf';
 
 // ============================================================================
 // Estado Global de la Aplicación
@@ -1111,9 +1112,13 @@ function initBatchOperations() {
     downloadBatchCsv();
   });
 
-  // Tab 3: Print Sheet Action
+  // Tab 3: PDF Direct Download & Print Sheet Actions
+  document.getElementById('btnDownloadPdfAction')?.addEventListener('click', () => {
+    downloadDirectPdf();
+  });
+
   document.getElementById('btnPrintSheetAction')?.addEventListener('click', () => {
-    window.print();
+    openCleanPrintWindow();
   });
 }
 
@@ -1194,38 +1199,386 @@ function downloadBatchCsv() {
   document.body.removeChild(link);
 }
 
+/**
+ * Renderiza la vista previa interactiva dentro del modal usando etiquetas <img>
+ * con Data URLs para máxima nitidez y rendimiento sin bloqueos de renderizado.
+ */
 async function renderPrintSheet(tokens) {
   const container = document.getElementById('printSheetGrid');
   if (!container) return;
 
   const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
 
-  container.innerHTML = tokens.map((t, idx) => `
-    <div class="print-ticket-item">
-      <div class="print-ticket-brand">${brandName}</div>
-      <div class="print-ticket-qr" id="print-qr-${idx}">
-        <!-- Canvas injected -->
-      </div>
-      <div class="print-ticket-code">${t.token}</div>
-      <div class="print-ticket-scratch">Raspe o escanee para validar</div>
+  container.innerHTML = `
+    <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--slate-500);">
+      <div style="display: inline-block; width: 28px; height: 28px; border: 3px solid rgba(14, 165, 233, 0.2); border-top-color: #0EA5E9; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 0.75rem;"></div>
+      <div style="font-size: 0.85rem; font-weight: 600; color: var(--slate-700);">Generando códigos QR de alta resolución (300 DPI)...</div>
     </div>
-  `).join('');
+  `;
 
-  // Generar los códigos QR en alta resolución
-  for (let i = 0; i < tokens.length; i++) {
-    const el = document.getElementById(`print-qr-${i}`);
-    if (el) {
-      try {
-        const canvas = await QRCode.toCanvas(tokens[i].scanUrl, {
-          width: 90,
-          margin: 1,
-          color: { dark: '#000000', light: '#FFFFFF' }
-        });
-        el.innerHTML = '';
-        el.appendChild(canvas);
-      } catch (err) {
-        console.error('Error generando QR para print sheet:', err);
+  try {
+    const ticketPromises = tokens.map(async (t) => {
+      const qrDataUrl = await QRCode.toDataURL(t.scanUrl, {
+        width: 260,
+        margin: 1,
+        color: { dark: '#0B192C', light: '#FFFFFF' }
+      });
+
+      return `
+        <div class="print-ticket-item">
+          <div class="print-ticket-brand">${brandName}</div>
+          <div class="print-ticket-qr">
+            <img src="${qrDataUrl}" alt="${t.token}" width="90" height="90" loading="lazy" />
+          </div>
+          <div class="print-ticket-code">${t.token}</div>
+          <div class="print-ticket-scratch">Raspe o escanee para validar</div>
+        </div>
+      `;
+    });
+
+    const cardsHtml = await Promise.all(ticketPromises);
+    container.innerHTML = cardsHtml.join('');
+  } catch (err) {
+    console.error('Error generando vista previa de impresión:', err);
+    container.innerHTML = `<div style="grid-column: 1 / -1; color: #DC2626; text-align: center;">Error generando códigos QR: ${err.message}</div>`;
+  }
+}
+
+/**
+ * Genera y descarga directamente un archivo .PDF de alta fidelidad vectorial
+ * con cuadrícula 3x4 (12 boletos por hoja carta), marcas de corte y encabezados corporativos.
+ */
+async function downloadDirectPdf() {
+  if (!currentGeneratedBatch || currentGeneratedBatch.length === 0) {
+    const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'ANDINA';
+    const qty = parseInt(document.getElementById('batchQtySelect')?.value || '24', 10);
+    generateBatchTokens(prefix, qty);
+  }
+
+  const tokens = currentGeneratedBatch;
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
+  const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'PROMO';
+  const btn = document.getElementById('btnDownloadPdfAction');
+  const statusMsg = document.getElementById('pdfStatusMsg');
+
+  // Estado de carga visual en el botón
+  const originalBtnHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.75';
+    btn.innerHTML = `
+      <div style="display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: #FFFFFF; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 6px; vertical-align: middle;"></div>
+      <span>${t('batchModal.btnDownloadPdfLoading')}</span>
+    `;
+  }
+  if (statusMsg) {
+    statusMsg.style.display = 'inline-block';
+    statusMsg.textContent = 'Renderizando vectores QR a 300 DPI...';
+  }
+
+  try {
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'letter' // 215.9 x 279.4 mm
+    });
+
+    const pageWidth = 215.9;
+    const marginX = 12;
+    const marginTop = 22;
+    const cols = 3;
+    const rows = 4;
+    const ticketsPerPage = cols * rows; // 12 boletos por pliego
+    const totalPages = Math.ceil(tokens.length / ticketsPerPage);
+
+    const ticketWidth = 60; // 60 mm de ancho
+    const ticketHeight = 58; // 58 mm de alto
+    const gapX = (pageWidth - (marginX * 2) - (cols * ticketWidth)) / (cols - 1); // ~5.95 mm
+    const gapY = 4.5; // 4.5 mm entre filas
+
+    for (let i = 0; i < tokens.length; i++) {
+      const pageIndex = Math.floor(i / ticketsPerPage);
+      const ticketInPageIndex = i % ticketsPerPage;
+
+      if (ticketInPageIndex === 0 && pageIndex > 0) {
+        doc.addPage('letter', 'portrait');
       }
+
+      // Encabezado de página
+      if (ticketInPageIndex === 0) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(11, 25, 44);
+        doc.text(`${brandName.toUpperCase()} — PLANILLA DE CÓDIGOS QR SEGUROS`, marginX, 10);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.setTextColor(100, 116, 139);
+        const metaStr = `Lote: ${prefix} | Total Códigos: ${tokens.length} | Pág. ${pageIndex + 1} de ${totalPages} | Criptografía SHA-256 Anti-Fraude`;
+        doc.text(metaStr, marginX, 15);
+
+        doc.setDrawColor(203, 213, 225);
+        doc.setLineWidth(0.3);
+        doc.line(marginX, 17, pageWidth - marginX, 17);
+      }
+
+      const col = ticketInPageIndex % cols;
+      const row = Math.floor(ticketInPageIndex / cols);
+      const x = marginX + col * (ticketWidth + gapX);
+      const y = marginTop + row * (ticketHeight + gapY);
+
+      const token = tokens[i];
+
+      // Borde punteado de corte perimetral
+      doc.setDrawColor(180, 195, 215);
+      doc.setLineWidth(0.25);
+      doc.setLineDashPattern([2, 1], 0);
+      doc.roundedRect(x, y, ticketWidth, ticketHeight, 1.5, 1.5, 'S');
+      doc.setLineDashPattern([], 0);
+
+      // Marca o Nombre del cliente
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(15, 23, 42);
+      const truncatedBrand = brandName.length > 22 ? brandName.slice(0, 20) + '...' : brandName;
+      doc.text(truncatedBrand.toUpperCase(), x + ticketWidth / 2, y + 5.5, { align: 'center' });
+
+      // Generación de QR nítido a 300 DPI
+      const qrDataUrl = await QRCode.toDataURL(token.scanUrl, {
+        width: 320,
+        margin: 1,
+        errorCorrectionLevel: 'M',
+        color: { dark: '#0B192C', light: '#FFFFFF' }
+      });
+
+      const qrSize = 31; // 31 mm
+      const qrX = x + (ticketWidth - qrSize) / 2;
+      const qrY = y + 7.5;
+      doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
+
+      // Caja del Código Token
+      doc.setFillColor(241, 245, 249);
+      doc.roundedRect(x + 5, y + 40, ticketWidth - 10, 5.5, 1, 1, 'F');
+
+      doc.setFont('courier', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(11, 25, 44);
+      doc.text(token.token, x + ticketWidth / 2, y + 43.8, { align: 'center' });
+
+      // Instrucción de raspe
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(5.8);
+      doc.setTextColor(100, 116, 139);
+      doc.text('Raspe o escanee para validar', x + ticketWidth / 2, y + 49.5, { align: 'center' });
+
+      // Firma forense / anti-falsificación
+      doc.setFont('courier', 'normal');
+      doc.setFontSize(5);
+      doc.setTextColor(148, 163, 184);
+      doc.text(`ID #${token.id} · ${token.hash.slice(0, 14)}`, x + ticketWidth / 2, y + 54, { align: 'center' });
+    }
+
+    // Descargar archivo PDF generado
+    const safeBrand = brandName.replace(/[^a-zA-Z0-9]/g, '_');
+    const filename = `Planilla_QRs_${safeBrand}_${prefix}_${Date.now()}.pdf`;
+    doc.save(filename);
+
+    if (statusMsg) {
+      statusMsg.textContent = '¡PDF descargado con éxito!';
+      setTimeout(() => {
+        statusMsg.style.display = 'none';
+      }, 4000);
+    }
+  } catch (err) {
+    console.error('Error generando PDF con jsPDF:', err);
+    alert('Ocurrió un error al generar el archivo PDF: ' + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = originalBtnHtml;
+    }
+  }
+}
+
+/**
+ * Abre una ventana emergente limpia e independiente con formato carta exacto
+ * sin interferencia de estilos de modal ni límites de scroll para impresión física.
+ */
+async function openCleanPrintWindow() {
+  if (!currentGeneratedBatch || currentGeneratedBatch.length === 0) {
+    generateBatchTokens('ANDINA', 24);
+  }
+
+  const tokens = currentGeneratedBatch;
+  const brandName = document.getElementById('brandNameInput')?.value.trim() || 'QR Shield Promo';
+  const prefix = document.getElementById('batchPrefixInput')?.value.trim() || 'PROMO';
+
+  const printWindow = window.open('', '_blank', 'width=950,height=800');
+  if (!printWindow) {
+    // Si el navegador bloquea la ventana emergente, invoca el diálogo de impresión normal
+    window.print();
+    return;
+  }
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Impresión de Códigos QR - ${brandName}</title>
+      <style>
+        @page {
+          size: letter portrait;
+          margin: 10mm;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          background: #FFFFFF;
+          color: #0F172A;
+          padding: 10mm;
+        }
+        .header {
+          border-bottom: 2px solid #CBD5E1;
+          padding-bottom: 8px;
+          margin-bottom: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+        }
+        .header h1 {
+          font-size: 14pt;
+          font-weight: 800;
+          color: #0B192C;
+          text-transform: uppercase;
+        }
+        .header p {
+          font-size: 8pt;
+          color: #64748B;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px 10px;
+        }
+        .ticket {
+          border: 1px dashed #94A3B8;
+          border-radius: 6px;
+          padding: 8px 6px;
+          text-align: center;
+          background: #FFFFFF;
+          break-inside: avoid;
+          page-break-inside: avoid;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          height: 185px;
+        }
+        .ticket-brand {
+          font-size: 7.5pt;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: #0F172A;
+        }
+        .ticket-qr img {
+          width: 95px;
+          height: 95px;
+          display: block;
+          margin: 4px auto;
+        }
+        .ticket-code {
+          font-family: monospace;
+          font-size: 8pt;
+          font-weight: bold;
+          background: #F1F5F9;
+          padding: 2px 6px;
+          border-radius: 3px;
+          color: #0B192C;
+        }
+        .ticket-scratch {
+          font-size: 6.5pt;
+          color: #64748B;
+          border-top: 1px dotted #CBD5E1;
+          padding-top: 3px;
+          margin-top: 2px;
+          width: 100%;
+        }
+        .ticket-hash {
+          font-family: monospace;
+          font-size: 5pt;
+          color: #94A3B8;
+        }
+        .no-print-bar {
+          background: #0B192C;
+          color: #FFFFFF;
+          padding: 10px 16px;
+          border-radius: 6px;
+          margin-bottom: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .btn-print {
+          background: #10B981;
+          color: #FFFFFF;
+          border: none;
+          padding: 8px 16px;
+          font-size: 10pt;
+          font-weight: bold;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        @media print {
+          .no-print-bar { display: none !important; }
+          body { padding: 0 !important; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="no-print-bar">
+        <span>Vista previa de impresión limpia de alta fidelidad (${tokens.length} boletos)</span>
+        <button class="btn-print" onclick="window.print()">🖨️ Enviar a Imprimir</button>
+      </div>
+      <div class="header">
+        <div>
+          <h1>${brandName} — Códigos QR Seguros</h1>
+          <p>Lote: ${prefix} | Fecha: ${new Date().toLocaleDateString()} | Total: ${tokens.length} códigos</p>
+        </div>
+        <p style="text-align: right;">Criptografía SHA-256 Anti-Fraude</p>
+      </div>
+      <div class="grid" id="gridContainer">
+        <p style="grid-column: 1 / -1; text-align: center; color: #64748B;">Cargando imágenes de alta resolución...</p>
+      </div>
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+
+  // Inyectar imágenes QR como data URLs en el popup
+  const gridContainer = printWindow.document.getElementById('gridContainer');
+  if (gridContainer) {
+    gridContainer.innerHTML = '';
+    for (const t of tokens) {
+      const qrDataUrl = await QRCode.toDataURL(t.scanUrl, {
+        width: 300,
+        margin: 1,
+        color: { dark: '#0B192C', light: '#FFFFFF' }
+      });
+      const ticketEl = printWindow.document.createElement('div');
+      ticketEl.className = 'ticket';
+      ticketEl.innerHTML = `
+        <div class="ticket-brand">${brandName}</div>
+        <div class="ticket-qr">
+          <img src="${qrDataUrl}" alt="${t.token}" />
+        </div>
+        <div class="ticket-code">${t.token}</div>
+        <div class="ticket-scratch">Raspe o escanee para validar</div>
+        <div class="ticket-hash">ID #${t.id} · ${t.hash.slice(0, 14)}</div>
+      `;
+      gridContainer.appendChild(ticketEl);
     }
   }
 }

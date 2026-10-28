@@ -757,20 +757,33 @@ Content-Type: application/json
 
         <!-- TAB 3: PRINT SHEET / PDF GENERATOR -->
         <div id="batchPanePrint" class="batch-pane" style="display: none;">
+          <div style="background: rgba(14, 165, 233, 0.08); border-left: 4px solid var(--cyan-500); padding: 0.85rem 1rem; border-radius: 0.35rem; margin-bottom: 1.25rem; font-size: 0.825rem; color: var(--slate-800);" data-i18n="batchModal.pdfNotice">
+            El archivo PDF incluye páginas carta automáticas (12 boletos por hoja) con marcas de corte y códigos QR vectoriales nítidos a 300 DPI.
+          </div>
+
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
-            <span style="font-size: 0.825rem; color: var(--slate-600);" data-i18n="batchModal.printExplainer">
-              Cuadrícula optimizada para corte en pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida de 300 DPI.
-            </span>
-            <button type="button" class="btn btn-primary" id="btnPrintSheetAction" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              <span>Imprimir / Guardar en PDF</span>
-            </button>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.825rem; color: var(--slate-600);" data-i18n="batchModal.printExplainer">
+                Cuadrícula de alta definición optimizada para pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida a 300 DPI.
+              </span>
+              <span id="pdfStatusMsg" style="display: none; font-size: 0.825rem; font-weight: 600; color: #059669; background: rgba(16, 185, 129, 0.1); padding: 0.2rem 0.6rem; border-radius: 4px;"></span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-emerald" id="btnDownloadPdfAction" style="font-size: 0.85rem; padding: 0.55rem 1.15rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                <span data-i18n="batchModal.btnDownloadPdf">Descargar Planilla PDF Directa (.pdf)</span>
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnPrintSheetAction" style="font-size: 0.85rem; padding: 0.55rem 1rem; color: var(--slate-800); border-color: var(--slate-300);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span data-i18n="batchModal.btnPrintWindow">Imprimir en Papel / Vista Previa</span>
+              </button>
+            </div>
           </div>
 
           <!-- Printable Sheet Area -->
-          <div id="printSheetWrapper" style="max-height: 400px; overflow-y: auto; background: var(--slate-100); padding: 1.5rem; border-radius: 0.75rem; border: 1px dashed var(--slate-300);">
+          <div id="printSheetWrapper" class="print-sheet-scrollbox">
             <div id="printSheetGrid" class="print-sheet-grid">
-              <!-- Dynamically populated with tickets -->
+              <!-- Dynamically populated with tickets containing crisp <img> tags -->
             </div>
           </div>
         </div>

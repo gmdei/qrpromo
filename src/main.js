@@ -387,6 +387,25 @@ function initSimulator() {
   const btnCloseCamera = document.getElementById('btnCloseCamera');
   btnToggleCamera?.addEventListener('click', toggleCameraScanner);
   btnCloseCamera?.addEventListener('click', stopCameraScanner);
+
+  // Botón Reiniciar Sandbox
+  const btnResetSandboxDb = document.getElementById('btnResetSandboxDb');
+  btnResetSandboxDb?.addEventListener('click', () => {
+    resetMockDatabase();
+    state.lastResult = null;
+    const manualInput = document.getElementById('manualTokenInput');
+    if (manualInput) manualInput.value = '';
+    const container = document.getElementById('uiResultContainer');
+    if (container) {
+      container.innerHTML = `
+        <div class="result-banner" style="background: rgba(16, 185, 129, 0.08); border: 2px dashed #10B981; text-align: center; padding: 1.5rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔄</div>
+          <h4 style="color: #065F46; margin: 0 0 0.25rem 0;">Sandbox Reiniciado</h4>
+          <p style="color: #047857; font-size: 0.85rem; margin: 0;">Todos los códigos han sido restablecidos a estado virgen (no consumido) para nuevas pruebas.</p>
+        </div>
+      `;
+    }
+  });
 }
 
 function switchSimulatorTab(tabId) {

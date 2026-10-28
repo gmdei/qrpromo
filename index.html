@@ -257,9 +257,15 @@
               </h3>
               <span data-i18n="simulator.scanExplainer">Haz clic en cualquiera de los 3 casos de prueba para disparar la llamada al servicio de validación:</span>
             </div>
-            <div class="status-indicator">
-              <span class="status-dot"></span>
-              <span>Cluster API v1 (Latencia: 600ms)</span>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>Cluster API v1 (Latencia: 600ms)</span>
+              </div>
+              <button type="button" class="btn btn-secondary" id="btnResetSandboxDb" style="font-size: 0.75rem; padding: 0.25rem 0.65rem; color: #FFFFFF; border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.08);" title="Restablecer base de datos del sandbox a estado virgen">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span>Reiniciar Sandbox</span>
+              </button>
             </div>
           </div>
 

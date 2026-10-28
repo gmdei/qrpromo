@@ -318,6 +318,16 @@ export async function validateToken(rawToken) {
 
       if (record.isWinner) {
         // Caso: Boleto Ganador
+        // Candado Atómico de Un Solo Uso: Se marca como consumido inmediatamente en el servidor.
+        record.redeemed = true;
+        record.status = 'ALREADY_REDEEMED';
+        record.redeemedAt = timestampIso;
+        record.redemptionMetadata = {
+          transactionId: traceId,
+          ipAddress: '190.24.89.*** (Escaneo Móvil)',
+          retailOutlet: 'Premio Desbloqueado - Primer Escaneo'
+        };
+
         resolve({
           httpStatus: 200,
           ok: true,
@@ -332,11 +342,13 @@ export async function validateToken(rawToken) {
             batchId: record.batchId,
             prize: record.prize,
             claimStatus: 'ELIGIBLE_FOR_REDEMPTION',
-            verificationToken: record.prize.securityVerificationCode,
+            verificationToken: record.prize?.securityVerificationCode || `SEC-${record.token}`,
             securityStatus: {
               blindKeyValidated: true,
               antiBotPassed: true,
-              budgetQuotaReserved: true
+              budgetQuotaReserved: true,
+              atomicLockEngaged: true,
+              singleUseConsumed: true
             },
             timestamp: timestampIso
           }
@@ -345,6 +357,16 @@ export async function validateToken(rawToken) {
       }
 
       // Caso: Boleto Sin Premio (Participación válida)
+      // Candado Atómico de Un Solo Uso: El intento queda consumido de inmediato.
+      record.redeemed = true;
+      record.status = 'ALREADY_REDEEMED';
+      record.redeemedAt = timestampIso;
+      record.redemptionMetadata = {
+        transactionId: traceId,
+        ipAddress: '190.24.89.*** (Escaneo Móvil)',
+        retailOutlet: 'Participación Registrada - Código Consumido'
+      };
+
       resolve({
         httpStatus: 200,
         ok: true,
@@ -358,12 +380,14 @@ export async function validateToken(rawToken) {
           isWinner: false,
           batchId: record.batchId,
           prize: null,
-          messageEs: record.messageEs,
-          messageEn: record.messageEn,
+          messageEs: record.messageEs || 'Código auténtico verificado. Tu participación ha sido registrada para el sorteo final.',
+          messageEn: record.messageEn || 'Authentic code verified. Your participation has been recorded for the final draw.',
           entryLogged: true,
           securityStatus: {
             blindKeyValidated: true,
-            entryRecorded: true
+            entryRecorded: true,
+            atomicLockEngaged: true,
+            singleUseConsumed: true
           },
           timestamp: timestampIso
         }
@@ -402,7 +426,7 @@ export async function redeemPrize(rawToken, winnerData) {
       const voucherCode = `VCH-${Math.floor(100000 + Math.random() * 900000)}-${token.replace('SHIELD-', '')}`;
       const voucherHash = `SHA256-${generateMockSignature(token, timestampIso).slice(-16).toUpperCase()}`;
 
-      // Marcamos el token en la base de datos simulada como ya redimido para que futuros reintentos fallen:
+      // Asegurar bloqueo definitivo intransferible
       if (mockTokenDatabase[token]) {
         mockTokenDatabase[token].redeemed = true;
         mockTokenDatabase[token].status = 'ALREADY_REDEEMED';
@@ -432,7 +456,7 @@ export async function redeemPrize(rawToken, winnerData) {
             email: winnerData.email,
             phone: winnerData.phone
           },
-          redemptionInstructionsEs: 'Presenta este código en cualquier distribuidor autorizado o en el portal de despachos con tu documento de identidad.',
+          redemptionInstructionsEs: 'Presenta este comprobante digital en cualquier distribuidor autorizado o en el portal de despachos con tu documento de identidad.',
           redemptionInstructionsEn: 'Present this digital voucher code at any authorized redemption partner along with your legal ID.',
           expiresAt: '2026-12-31T23:59:59Z'
         }
@@ -442,11 +466,18 @@ export async function redeemPrize(rawToken, winnerData) {
 }
 
 /**
- * Reinicia la base de datos simulada para permitir múltiples pruebas
+ * Reinicia la base de datos simulada para permitir nuevas rondas de pruebas del Sandbox
  */
 export function resetMockDatabase() {
-  mockTokenDatabase['SHIELD-WIN-9021'].redeemed = false;
-  mockTokenDatabase['SHIELD-WIN-9021'].status = 'VALID';
-  mockTokenDatabase['SHIELD-ERR-8492'].redeemed = true;
-  mockTokenDatabase['SHIELD-ERR-8492'].status = 'ALREADY_REDEEMED';
+  Object.keys(mockTokenDatabase).forEach(k => {
+    if (k === 'SHIELD-ERR-8492') {
+      mockTokenDatabase[k].redeemed = true;
+      mockTokenDatabase[k].status = 'ALREADY_REDEEMED';
+    } else {
+      mockTokenDatabase[k].redeemed = false;
+      mockTokenDatabase[k].status = 'VALID';
+      delete mockTokenDatabase[k].redeemedAt;
+      delete mockTokenDatabase[k].redemptionMetadata;
+    }
+  });
 }

@@ -1,0 +1,253 @@
+{
+  "nav": {
+    "brand": "QR Shield Promo",
+    "tagline": "Enterprise Sweepstakes Intelligence",
+    "benefits": "Ventajas Comerciales",
+    "security": "Seguridad Blindada",
+    "simulator": "Simulador Sandbox",
+    "batch": "Generador & Exportador",
+    "architecture": "Arquitectura API",
+    "cta": "Probar Simulador",
+    "contact": "Solicitar Propuesta"
+  },
+  "hero": {
+    "badge": "Infraestructura Empresarial para Campañas Masivas",
+    "titleStart": "Transforma cada código QR en una experiencia ",
+    "titleHighlight": "segura, emocionante y libre de fraude.",
+    "subtitle": "Conecta empaques, tickets y piezas impresas con premios instantáneos de alta emoción. Tu cliente solo apunta la cámara nativa de su smartphone: sin descargar aplicaciones externas, con validación milimétrica en la nube y blindaje criptográfico de extremo a extremo.",
+    "ctaDemo": "Ver Demostración en Vivo",
+    "ctaSecurity": "Cómo Funciona la Seguridad",
+    "stats": [
+      { "value": "0 seg", "label": "Tiempo de instalación requerido" },
+      { "value": "100%", "label": "Prevención contra duplicados" },
+      { "value": "< 120ms", "label": "Tiempo de respuesta del servidor" },
+      { "value": "99.99%", "label": "Uptime para picos de tráfico masivo" }
+    ],
+    "phonePreview": {
+      "status": "Escaneo Criptográfico Activo",
+      "instruction": "Enfoca cualquier código impreso",
+      "secureBadge": "Token SHA-256 Verificado",
+      "floatingBadge1": "Criptografía Blindada",
+      "floatingBadge2": "Cero Fricción (Sin Apps)",
+      "floatingBadge3": "Anti-Fraude 99.99%"
+    }
+  },
+  "business": {
+    "badge": "Impacto Comercial & ROI",
+    "title": "Diseñado para cautivar al consumidor y blindar el presupuesto corporativo",
+    "subtitle": "Los sorteos tradicionales en papel sufren de clonación, desconfianza y baja participación. Nuestra plataforma resuelve cada fricción con tecnología de clase bancaria.",
+    "cards": [
+      {
+        "id": "frictionless",
+        "icon": "smartphone",
+        "title": "Cero Fricción para el Usuario",
+        "desc": "Funciona directo con la cámara nativa de cualquier smartphone (iOS o Android). Sin descargas pesadas de tiendas de aplicaciones, sin registros interminables previos al escaneo.",
+        "metric": "+340% Conversión vs Apps Nativas"
+      },
+      {
+        "id": "budget",
+        "icon": "shield-check",
+        "title": "Control Total del Presupuesto",
+        "desc": "Los premios se activan bajo reglas de negocio estrictas, cuotas horarias y cupos presupuestarios preasignados. Jamás se entregará un premio fuera de los parámetros aprobados.",
+        "metric": "100% Blindaje Financiero"
+      },
+      {
+        "id": "analytics",
+        "icon": "bar-chart-3",
+        "title": "Métricas y Datos en Vivo",
+        "desc": "Monitorea en tiempo real la tasa de escaneos, mapas de calor por ciudad, horas de mayor tráfico comercial y conversión a canje para tomar decisiones de marketing sobre la marcha.",
+        "metric": "Telemetría en Milisegundos"
+      },
+      {
+        "id": "versatile",
+        "icon": "layers",
+        "title": "Adaptable a Cualquier Soporte",
+        "desc": "Compatible con cualquier formato de imprenta: etiquetas scratch-off (raspa y gana), tapas de botellas, empaques flexibles, boletos de eventos o tickets de punto de venta (POS).",
+        "metric": "Universal Print Ready"
+      }
+    ]
+  },
+  "security": {
+    "badge": "Trust & Compliance Empresarial",
+    "title": "Seguridad de Grado Bancario explicada en lenguaje llano",
+    "subtitle": "Para los directores de marca y finanzas, la mayor pesadilla es la filtración de premios en imprenta o la clonación por WhatsApp. Nuestro motor elimina estos riesgos en la raíz.",
+    "pillars": [
+      {
+        "number": "01",
+        "title": "La Llave Ciega (Tokens Criptográficos Únicos)",
+        "metaphor": "Los códigos impresos no contienen el premio en su interior.",
+        "desc": "El código QR contiene únicamente una clave criptográfica pseudoaleatoria de alta entropía. Nadie en la fábrica de empaques ni en la imprenta puede saber si un boleto está premiado. La decisión de asignar premio la toma el servidor seguro en el milisegundo exacto en que el consumidor final lo escanea.",
+        "tag": "Zero-Knowledge Printing"
+      },
+      {
+        "number": "02",
+        "title": "Candado de Un Solo Uso (Atomic Single-Use Lock)",
+        "metaphor": "Un billete digital que se autodestruye al ser gastado.",
+        "desc": "En cuanto un consumidor valida un código premiado o de participación, el registro en base de datos cambia atómicamente a estado 'CONSUMIDO' con marca de tiempo UTC e IP. Si el usuario intenta compartir la foto por WhatsApp o escanearlo dos veces, el sistema lo rechaza al instante con auditoría forense.",
+        "tag": "Transacciones Atómicas ACID"
+      },
+      {
+        "number": "03",
+        "title": "Protección Anti-Robots & Firewall Inteligente",
+        "metaphor": "Un guardia de seguridad digital que detecta patrones anómalos.",
+        "desc": "Detectamos y bloqueamos automáticamente intentos de adivinar combinaciones por fuerza bruta, bots automatizados y granjas de clics. Limitamos las solicitudes por IP y firma de dispositivo (Rate Limiting dinámico), garantizando juego limpio.",
+        "tag": "Rate Limiting & WAF Layer"
+      }
+    ],
+    "flowTitle": "Flujo de Vida Criptográfico de un Ticket",
+    "steps": [
+      { "step": "1", "title": "Generación Ciega", "desc": "Tokens firmados criptográficamente enviados a imprenta con cifrado AES-256." },
+      { "step": "2", "title": "Lectura Segura", "desc": "El consumidor escanea con cámara nativa vía canal cifrado HTTPS / TLS 1.3." },
+      { "step": "3", "title": "Veredicto Atómico", "desc": "El cluster valida unicidad, reglas de presupuesto y estado en menos de 100ms." },
+      { "step": "4", "title": "Canje y Auditoría", "desc": "Premio bloqueado con comprobante único y registro inmutable en log de auditoría." }
+    ]
+  },
+  "simulator": {
+    "badge": "Sandbox Corporativo en Vivo",
+    "title": "Simulador Interactivo de Validación",
+    "subtitle": "Experimenta en tiempo real cómo reacciona el motor de validación ante los 3 escenarios más comunes de una campaña en producción.",
+    "scanExplainer": "Haz clic en cualquiera de los 3 casos de prueba para disparar la llamada al servicio de validación, o escanea el QR con tu smartphone:",
+    "cards": [
+      {
+        "type": "winner",
+        "token": "SHIELD-WIN-9021",
+        "title": "Boleto Ganador",
+        "description": "Token virgen asignado con premio de alta gama. Desencadena felicitaciones, confeti sutil y formulario de canje seguro.",
+        "badge": "Premio Mayor Asignado",
+        "action": "Simular Escaneo Ganador"
+      },
+      {
+        "type": "tryAgain",
+        "token": "SHIELD-TRY-4412",
+        "title": "Boleto Sin Premio",
+        "description": "Token auténtico y válido, pero no favorecido en esta ocasión. Respuesta empática con llamado a seguir participando.",
+        "badge": "Participación Válida",
+        "action": "Simular Escaneo Sin Premio"
+      },
+      {
+        "type": "alreadyUsed",
+        "token": "SHIELD-ERR-8492",
+        "title": "Boleto Ya Usado / Replicado",
+        "description": "Token que simula un código escaneado minutos antes o foto compartida en redes. Alerta inmediata de seguridad y bloqueo.",
+        "badge": "Alerta de Fraude Detectada",
+        "action": "Simular Escaneo Duplicado"
+      }
+    ],
+    "manualInput": {
+      "title": "O ingresa un código manualmente o activa la cámara web",
+      "placeholder": "Ej: SHIELD-WIN-9021, SHIELD-TRY-4412...",
+      "validateBtn": "Validar Código",
+      "cameraBtn": "Escanear con Cámara Web / Móvil",
+      "stopCameraBtn": "Apagar Cámara",
+      "cameraNotice": "Coloca el código QR frente a tu lente óptico"
+    },
+    "tabs": {
+      "ui": "Experiencia del Usuario Final",
+      "json": "Inspector de Seguridad JSON (Dev)",
+      "audit": "Consola de Auditoría en Tiempo Real"
+    },
+    "result": {
+      "readyTitle": "Esperando prueba de escaneo...",
+      "readyDesc": "Selecciona uno de los casos anteriores, escribe un token o activa el lector de cámara para ver el veredicto en tiempo real.",
+      "processing": "Consultando cluster de seguridad criptográfica...",
+      "winnerTitle": "¡Felicitaciones! Boleto Premiado",
+      "winnerDesc": "Has desbloqueado un premio oficial de la campaña. Tu código ha sido autenticado por el servidor de seguridad.",
+      "prizeLabel": "Premio Otorgado:",
+      "claimBtn": "Reclamar Premio Ahora",
+      "tryTitle": "¡Gracias por participar!",
+      "tryDesc": "Tu código es auténtico y tu oportunidad quedó registrada en la base de datos. ¡Sigue probando en tu próximo empaque!",
+      "retryBtn": "Intentar con Otro Boleto",
+      "usedTitle": "Alerta de Seguridad: Código Ya Utilizado",
+      "usedDesc": "Este boleto ya fue redimido previamente en el sistema. El candado atómico impidió un intento de doble canje.",
+      "firstRedeemed": "Primer canje registrado:",
+      "txCode": "ID Transacción:",
+      "ipAddress": "IP de Registro:",
+      "invalidTitle": "Código No Reconocido o Formato Inválido",
+      "invalidDesc": "El token ingresado no corresponde a la serie autorizada de esta campaña o fue manipulado."
+    },
+    "auditTable": {
+      "empty": "No hay eventos registrados en esta sesión aún. Dispara un escaneo arriba.",
+      "colTimestamp": "Hora UTC",
+      "colToken": "Token Evaluado",
+      "colStatus": "Veredicto",
+      "colLatency": "Latencia",
+      "colAction": "Detalle"
+    }
+  },
+  "claimModal": {
+    "title": "Formulario de Canje Seguro",
+    "subtitle": "Ingresa tus datos para vincular el premio de forma intransferible a tu documento de identidad:",
+    "tokenLabel": "Código Validado:",
+    "prizeLabel": "Premio Ganado:",
+    "fullName": "Nombre Completo",
+    "fullNamePlaceholder": "Ej. Viviana Gómez Morales",
+    "idNumber": "Documento de Identidad / Cédula / DNI",
+    "idPlaceholder": "Ej. 1020304050",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "viviana@empresa.com",
+    "phone": "Teléfono Móvil",
+    "phonePlaceholder": "+57 300 123 4567",
+    "terms": "Acepto los términos y condiciones de la promoción y el tratamiento de datos personales.",
+    "submitBtn": "Emitir Comprobante de Canje Digital",
+    "voucherSuccessTitle": "Comprobante de Canje Emitido con Éxito",
+    "voucherSuccessDesc": "El premio ha sido asignado formalmente a tu nombre en la base de datos central. Presenta este comprobante digital en el punto de entrega:",
+    "voucherCode": "CÓDIGO DE RETIRO AUTORIZADO:",
+    "hashLabel": "Hash de Auditoría SHA-256:",
+    "closeBtn": "Finalizar y Cerrar"
+  },
+  "archModal": {
+    "title": "Especificación de Arquitectura & Integración API",
+    "subtitle": "Diseñado para pasar de este Sandbox a tu infraestructura Cloud (AWS, Azure, Google Cloud o servidores propios) en minutos.",
+    "endpoint1": "1. Validación Atómica de Token",
+    "endpoint2": "2. Canje y Asignación de Premio",
+    "callout": "Nota para Desarrolladores: Este prototipo ya implementa la capa `mockValidatorService.js`. Para conectar tu base de datos PostgreSQL, MongoDB o microservicio Express/Spring Boot, solo debes sustituir el método `fetchMock` por la URL de tu API real.",
+    "close": "Entendido"
+  },
+  "ctaSection": {
+    "badge": "Lanzamiento Inmediato",
+    "title": "¿Listo para lanzar tu campaña de alto impacto?",
+    "subtitle": "La arquitectura modular de este prototipo está lista para desplegarse con tus reglas de negocio, cupos de premios e identidad de marca. Sin empezar desde cero.",
+    "btnContact": "Solicitar Propuesta Formal",
+    "btnArch": "Ver Especificación de API",
+    "contactModalTitle": "Solicitar Propuesta Comercial",
+    "contactModalSubtitle": "Cuéntanos sobre tu campaña y te entregaremos una cotización personalizada con arquitectura de despliegue en menos de 24 horas.",
+    "company": "Empresa / Marca",
+    "volume": "Volumen estimado de códigos",
+    "volumeOption1": "10,000 a 100,000 códigos",
+    "volumeOption2": "100,000 a 1,000,000 códigos",
+    "volumeOption3": "Más de 1,000,000 (Campaña Nacional)",
+    "sendBtn": "Enviar Solicitud",
+    "sentSuccess": "¡Solicitud enviada con éxito! Nuestro equipo de arquitectura y negocios te contactará a la brevedad."
+  },
+  "batchModal": {
+    "navBtn": "Generador Masivo & PDF / Excel",
+    "title": "Centro de Operaciones: Generador Masivo, Excel & Personalización",
+    "subtitle": "Personaliza la marca del cliente, genera lotes de tokens criptográficos y expórtalos en Excel/CSV (formato VDP para imprentas industriales) o planillas de impresión directa.",
+    "tab1": "Personalización de Marca",
+    "tab2": "Generador Masivo (Excel / CSV)",
+    "tab3": "Planilla de Impresión / PDF",
+    "brandName": "Nombre de la Marca / Cliente",
+    "brandPlaceholder": "Ej. Refrescos Andina, Banco Continental, Supertiendas...",
+    "brandColor": "Color Primario de Campaña",
+    "headlineCustom": "Titular de Campaña Personalizado",
+    "headlinePlaceholder": "Ej. ¡Destapa, escanea y gana al instante!",
+    "applyTheme": "Aplicar Tema en Vivo a la Landing",
+    "themeSuccess": "¡Identidad de marca aplicada en tiempo real a la plataforma!",
+    "batchQuantity": "Cantidad de Tokens a Generar",
+    "batchPrefix": "Prefijo de Campaña",
+    "batchPrefixPlaceholder": "Ej. ANDINA, BANCO, PROMO",
+    "btnGenerate": "Generar Lote Criptográfico",
+    "btnExportCsv": "Descargar Listado en Excel / CSV (VDP Industrial)",
+    "btnOpenPrintView": "Generar Planilla de Impresión / PDF con QRs",
+    "csvExplainer": "Estándar universal VDP (Variable Data Printing). Compatible con prensas digitales HP Indigo, Fiery, Domino, Mark Andy e impresoras de etiquetas.",
+    "printExplainer": "Cuadrícula optimizada para corte en pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida de 300 DPI."
+  },
+  "footer": {
+    "brandDesc": "Plataforma corporativa de sorteos inteligentes, promociones dinámicas y validación criptográfica de códigos QR para consumo masivo y retail.",
+    "col1Title": "Soluciones",
+    "col1Links": ["Sorteos en Empaques", "Raspa y Gana Digital", "Tickets & Facturación POS", "Campañas Multimarcas"],
+    "col2Title": "Cumplimiento & Seguridad",
+    "col2Links": ["Criptografía SHA-256", "Auditoría Forense", "Cumplimiento GDPR / Datos", "Certificación ISO 27001 Ready"],
+    "rights": "Todos los derechos reservados. Arquitectura Enterprise para Sorteos Seguros."
+  }
+}

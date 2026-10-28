@@ -1,0 +1,253 @@
+{
+  "nav": {
+    "brand": "QR Shield Promo",
+    "tagline": "Enterprise Sweepstakes Intelligence",
+    "benefits": "Business Advantages",
+    "security": "Ironclad Security",
+    "simulator": "Sandbox Simulator",
+    "batch": "Batch Generator & Export",
+    "architecture": "API Architecture",
+    "cta": "Launch Simulator",
+    "contact": "Request Proposal"
+  },
+  "hero": {
+    "badge": "Enterprise Infrastructure for Mass Consumer Campaigns",
+    "titleStart": "Turn every QR code into a ",
+    "titleHighlight": "secure, thrilling, and fraud-proof experience.",
+    "subtitle": "Bridge packaging, receipts, and printed media with instant high-engagement rewards. Consumers simply scan with their native smartphone camera—no app downloads required—backed by sub-millisecond cloud verification and end-to-end cryptographic shielding.",
+    "ctaDemo": "View Live Demo",
+    "ctaSecurity": "How Security Works",
+    "stats": [
+      { "value": "0 sec", "label": "Installation friction for users" },
+      { "value": "100%", "label": "Duplicate & cloning prevention" },
+      { "value": "< 120ms", "label": "Average server response time" },
+      { "value": "99.99%", "label": "Uptime SLA during traffic surges" }
+    ],
+    "phonePreview": {
+      "status": "Cryptographic Scan Active",
+      "instruction": "Point camera at any printed ticket",
+      "secureBadge": "Verified SHA-256 Token",
+      "floatingBadge1": "Shielded Cryptography",
+      "floatingBadge2": "Zero Friction (No Apps)",
+      "floatingBadge3": "99.99% Fraud Prevention"
+    }
+  },
+  "business": {
+    "badge": "Business Impact & ROI",
+    "title": "Engineered to delight consumers while fiercely protecting corporate budgets",
+    "subtitle": "Traditional paper scratch-offs and sweepstakes suffer from cloning, insider leaks, and plummeting engagement. Our platform neutralizes every bottleneck with banking-grade technology.",
+    "cards": [
+      {
+        "id": "frictionless",
+        "icon": "smartphone",
+        "title": "Zero Friction for the Consumer",
+        "desc": "Operates natively with any smartphone camera (iOS or Android). No heavy app store downloads, no mandatory upfront 10-step forms prior to scanning.",
+        "metric": "+340% Conversion vs Native Apps"
+      },
+      {
+        "id": "budget",
+        "icon": "shield-check",
+        "title": "Absolute Budget Control",
+        "desc": "Prizes trigger exclusively under strict business rules, hourly distribution quotas, and hard budget caps. Never will an unauthorized or out-of-budget prize be awarded.",
+        "metric": "100% Financial Cap Assurance"
+      },
+      {
+        "id": "analytics",
+        "icon": "bar-chart-3",
+        "title": "Live Telemetry & Metrics",
+        "desc": "Real-time visibility into scan velocity, geo-heatmaps, peak retail trading hours, and redemption conversion curves to guide dynamic marketing decisions.",
+        "metric": "Millisecond-Level Telemetry"
+      },
+      {
+        "id": "versatile",
+        "icon": "layers",
+        "title": "Universal Print & Media Compatibility",
+        "desc": "Integrates seamlessly across any industrial print format: scratch-off labels, bottle caps, flexible pouches, packaging carton, in-store POS receipts, or event wristbands.",
+        "metric": "Universal Print Ready"
+      }
+    ]
+  },
+  "security": {
+    "badge": "Enterprise Trust & Compliance",
+    "title": "Banking-Grade Security Explained in Plain Language",
+    "subtitle": "For brand managers and CFOs, the nightmare scenario is printing leaks or viral duplicate redemption via messaging apps. Our architecture eliminates these vulnerabilities at their root.",
+    "pillars": [
+      {
+        "number": "01",
+        "title": "The Blind Key (Unique Cryptographic Tokens)",
+        "metaphor": "Printed codes do not contain the prize inside them.",
+        "desc": "Each QR contains only a high-entropy pseudo-random cryptographic token. No print shop worker or packaging vendor can ascertain whether a ticket carries a prize. The assignment verdict is computed by the secure server cluster at the exact millisecond the consumer scans.",
+        "tag": "Zero-Knowledge Printing"
+      },
+      {
+        "number": "02",
+        "title": "Single-Use Atomic Lock",
+        "metaphor": "A digital banknote that self-retires once redeemed.",
+        "desc": "The moment a user validates a winning or entry code, the database transaction atomically switches state to 'CONSUMED' with UTC timestamp and encrypted IP signature. Attempting to rescan or share a screenshot triggers immediate rejection and audit logging.",
+        "tag": "ACID Atomic Transactions"
+      },
+      {
+        "number": "03",
+        "title": "Bot Shield & Dynamic Rate Limiting",
+        "metaphor": "An AI gatekeeper thwarting suspicious velocity patterns.",
+        "desc": "Automated algorithms detect and quarantine brute-force token guessing, distributed scraper bots, and click farms. Requests are throttled per IP and device fingerprint to ensure equitable consumer fairness.",
+        "tag": "Rate Limiting & WAF Layer"
+      }
+    ],
+    "flowTitle": "Ticket Cryptographic Lifecycle",
+    "steps": [
+      { "step": "1", "title": "Blind Generation", "desc": "Pre-hashed cryptographic tokens exported to print partners under AES-256 encryption." },
+      { "step": "2", "title": "Encrypted Scan", "desc": "Consumer scans via native lens over authenticated HTTPS / TLS 1.3 channels." },
+      { "step": "3", "title": "Atomic Verdict", "desc": "Cloud cluster evaluates state, fraud rules, and budget limits in under 100ms." },
+      { "step": "4", "title": "Locked Voucher", "desc": "Prize claimed, locked with unique redemption hash, and permanently logged in audit trails." }
+    ]
+  },
+  "simulator": {
+    "badge": "Live Corporate Sandbox",
+    "title": "Interactive Validation Simulator",
+    "subtitle": "Experience first-hand how the security engine behaves across the 3 critical real-world campaign scenarios.",
+    "scanExplainer": "Click any of the 3 test cases below to trigger the validation service, or scan the QR with your phone:",
+    "cards": [
+      {
+        "type": "winner",
+        "token": "SHIELD-WIN-9021",
+        "title": "Winning Ticket",
+        "description": "Virgin token assigned a premier tier prize. Triggers celebration UI, subtle confetti, and an authenticated claim workflow.",
+        "badge": "Top Prize Assigned",
+        "action": "Simulate Winning Scan"
+      },
+      {
+        "type": "tryAgain",
+        "token": "SHIELD-TRY-4412",
+        "title": "Non-Winning Ticket",
+        "description": "Authentic and valid token, but non-winning in this run. Delivers an encouraging message and clear call to participate again.",
+        "badge": "Valid Entry Logged",
+        "action": "Simulate Standard Scan"
+      },
+      {
+        "type": "alreadyUsed",
+        "token": "SHIELD-ERR-8492",
+        "title": "Already Used / Cloned Ticket",
+        "description": "Simulates a token redeemed minutes earlier or shared on social media. Triggers instant security alert and forensic audit block.",
+        "badge": "Fraud Alert Triggered",
+        "action": "Simulate Duplicate Scan"
+      }
+    ],
+    "manualInput": {
+      "title": "Or enter a token manually or activate camera scanner",
+      "placeholder": "e.g., SHIELD-WIN-9021, SHIELD-TRY-4412...",
+      "validateBtn": "Validate Token",
+      "cameraBtn": "Scan with Webcam / Mobile Camera",
+      "stopCameraBtn": "Stop Camera",
+      "cameraNotice": "Hold the QR code steadily in front of your lens"
+    },
+    "tabs": {
+      "ui": "End-Consumer Experience",
+      "json": "Security JSON Inspector (Dev)",
+      "audit": "Live Telemetry & Audit Console"
+    },
+    "result": {
+      "readyTitle": "Ready for Scan Simulation...",
+      "readyDesc": "Select any scenario above, type a token, or enable the camera to inspect real-time verification verdicts.",
+      "processing": "Querying cryptographic security cluster...",
+      "winnerTitle": "Congratulations! Prize Confirmed",
+      "winnerDesc": "You unlocked an official campaign reward. Your token has been verified and authenticated by the cloud security engine.",
+      "prizeLabel": "Awarded Prize:",
+      "claimBtn": "Claim Prize Now",
+      "tryTitle": "Thank You for Participating!",
+      "tryDesc": "Your code is authentic and your entry has been securely logged. Keep enjoying your favorite products to try again!",
+      "retryBtn": "Test Another Ticket",
+      "usedTitle": "Security Alert: Code Already Redeemed",
+      "usedDesc": "This ticket was previously validated and consumed. The atomic single-use lock successfully blocked a duplicate redemption attempt.",
+      "firstRedeemed": "First redeemed on:",
+      "txCode": "Transaction ID:",
+      "ipAddress": "Registered IP:",
+      "invalidTitle": "Unrecognized or Tampered Token",
+      "invalidDesc": "The supplied token does not match authorized series parameters or has failed signature integrity checks."
+    },
+    "auditTable": {
+      "empty": "No events recorded in this session yet. Trigger a scan test above.",
+      "colTimestamp": "UTC Timestamp",
+      "colToken": "Evaluated Token",
+      "colStatus": "Verdict",
+      "colLatency": "Latency",
+      "colAction": "Details"
+    }
+  },
+  "claimModal": {
+    "title": "Secure Prize Redemption Form",
+    "subtitle": "Provide recipient identity details to bind the prize irreversibly to your legal document:",
+    "tokenLabel": "Validated Token:",
+    "prizeLabel": "Won Prize:",
+    "fullName": "Full Legal Name",
+    "fullNamePlaceholder": "e.g., Jordan Vance",
+    "idNumber": "National ID / Passport / Driver License",
+    "idPlaceholder": "e.g., ID-9988221",
+    "email": "Corporate / Personal Email",
+    "emailPlaceholder": "jordan@company.com",
+    "phone": "Mobile Phone Number",
+    "phonePlaceholder": "+1 (555) 019-2834",
+    "terms": "I accept the sweepstakes terms & conditions and authorized personal data processing.",
+    "submitBtn": "Issue Digital Redemption Voucher",
+    "voucherSuccessTitle": "Digital Voucher Issued Successfully",
+    "voucherSuccessDesc": "The prize has been officially bound to your identity record in the central vault. Present this digital voucher at designated fulfillment centers:",
+    "voucherCode": "AUTHORIZED PICKUP CODE:",
+    "hashLabel": "Audit SHA-256 Hash:",
+    "closeBtn": "Complete & Close"
+  },
+  "archModal": {
+    "title": "Architecture & API Integration Specification",
+    "subtitle": "Engineered to transition from this Sandbox to your Cloud infrastructure (AWS, Azure, GCP, or on-premise) in minutes.",
+    "endpoint1": "1. Atomic Token Validation",
+    "endpoint2": "2. Prize Redemption & Lock",
+    "callout": "Developer Note: This prototype utilizes `mockValidatorService.js`. To connect your real PostgreSQL/MongoDB database or microservices, simply replace the simulated fetch with your live API endpoint.",
+    "close": "Got it"
+  },
+  "ctaSection": {
+    "badge": "Turnkey Deployment",
+    "title": "Ready to launch your high-impact campaign?",
+    "subtitle": "This prototype's modular architecture is primed for production with your custom business rules, prize allocation schedules, and brand identity. Never start from scratch.",
+    "btnContact": "Request Enterprise Proposal",
+    "btnArch": "View API Specification",
+    "contactModalTitle": "Request Commercial Proposal",
+    "contactModalSubtitle": "Share your campaign scope and we will deliver a tailored quotation and architecture blueprint within 24 hours.",
+    "company": "Company / Brand Name",
+    "volume": "Estimated Token Volume",
+    "volumeOption1": "10,000 to 100,000 tokens",
+    "volumeOption2": "100,000 to 1,000,000 tokens",
+    "volumeOption3": "Over 1,000,000 (National / Global Campaign)",
+    "sendBtn": "Submit Request",
+    "sentSuccess": "Request submitted successfully! Our enterprise architecture and accounts team will reach out shortly."
+  },
+  "batchModal": {
+    "navBtn": "Batch Generator & Export",
+    "title": "Operations Center: Batch Generator, Excel & Branding",
+    "subtitle": "Customize client brand identity, generate cryptographic token batches, and export to Excel/CSV (VDP format for industrial print houses) or direct print sheets.",
+    "tab1": "Brand Customization",
+    "tab2": "Batch Generator (Excel / CSV)",
+    "tab3": "Print Sheet / PDF",
+    "brandName": "Brand / Campaign Name",
+    "brandPlaceholder": "e.g. Andina Beverages, Global Bank, Supermarket Plus...",
+    "brandColor": "Campaign Primary Color",
+    "headlineCustom": "Custom Campaign Headline",
+    "headlinePlaceholder": "e.g. Crack open, scan, and win instantly!",
+    "applyTheme": "Apply Live Theme to Landing",
+    "themeSuccess": "Brand identity successfully applied across the platform in real time!",
+    "batchQuantity": "Quantity of Tokens to Generate",
+    "batchPrefix": "Campaign Token Prefix",
+    "batchPrefixPlaceholder": "e.g. ANDINA, BANK, PROMO",
+    "btnGenerate": "Generate Cryptographic Batch",
+    "btnExportCsv": "Download Excel / CSV File (Industrial VDP)",
+    "btnOpenPrintView": "Generate Print Sheet / PDF with QRs",
+    "csvExplainer": "Universal Variable Data Printing (VDP) standard. Fully compatible with HP Indigo, Fiery, Domino, Mark Andy, and roll label presses.",
+    "printExplainer": "Grid layout optimized for Letter/A4 sticker sheets, scratch-off cards, or raffle tickets in sharp 300 DPI vector clarity."
+  },
+  "footer": {
+    "brandDesc": "Enterprise platform for intelligent sweepstakes, dynamic promotions, and cryptographic QR code validation for CPG, retail, and corporate brands.",
+    "col1Title": "Solutions",
+    "col1Links": ["Packaging Sweepstakes", "Digital Scratch-Off", "POS & Receipt Promos", "Multi-Brand Loyalty Campaigns"],
+    "col2Title": "Compliance & Security",
+    "col2Links": ["SHA-256 Cryptography", "Forensic Audit Trail", "GDPR / Data Privacy", "ISO 27001 Ready Architecture"],
+    "rights": "All rights reserved. Enterprise Architecture for Secure Sweepstakes."
+  }
+}

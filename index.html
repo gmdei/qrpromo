@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B192C">
+  <title>QR Shield Promo | Sistema Inteligente de Sorteos por Códigos QR Seguros</title>
+  <meta name="description" content="Plataforma empresarial para sorteos masivos y promociones por códigos QR seguros. Validación criptográfica instantánea, cero descargas de apps y prevención total de fraude.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230EA5E9'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/></svg>">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar" id="mainHeader">
+    <div class="container navbar-inner">
+      <a href="#hero" class="brand-link" id="brandLink">
+        <div class="brand-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 data-i18n="nav.brand">QR Shield Promo</h1>
+          <span data-i18n="nav.tagline">Enterprise Sweepstakes Intelligence</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="nav-links">
+        <a href="#benefits" class="nav-link" data-i18n="nav.benefits">Ventajas Comerciales</a>
+        <a href="#security" class="nav-link" data-i18n="nav.security">Seguridad Blindada</a>
+        <a href="#simulator" class="nav-link" data-i18n="nav.simulator">Simulador Sandbox</a>
+        <a href="#batch" class="nav-link" id="navBatchLink" data-i18n="nav.batch" onclick="window.openBatchModal && window.openBatchModal()">Generador & Exportador</a>
+        <a href="#architecture" class="nav-link" id="navArchLink" data-i18n="nav.architecture">Arquitectura API</a>
+      </nav>
+
+      <!-- Language Switcher & Quick CTA -->
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language selector">
+          <button type="button" class="lang-btn active" id="langEsBtn" data-lang="es" onclick="window.setLanguage('es')">
+            <span>🇪🇸</span> ES
+          </button>
+          <button type="button" class="lang-btn" id="langEnBtn" data-lang="en" onclick="window.setLanguage('en')">
+            <span>🇺🇸</span> EN
+          </button>
+        </div>
+
+        <a href="#simulator" class="btn btn-primary" id="navCtaBtn" data-i18n="nav.cta">
+          Probar Simulador
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="section section-dark bg-grid-dark" id="hero">
+      <div class="bg-radial-glow"></div>
+      <div class="container hero-content">
+        <!-- Hero Left Column: Proposition -->
+        <div class="hero-text">
+          <span class="badge badge-cyan" data-i18n="hero.badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Infraestructura Empresarial para Campañas Masivas
+          </span>
+
+          <h1>
+            <span data-i18n="hero.titleStart">Transforma cada código QR en una experiencia </span>
+            <span class="hero-gradient-text" data-i18n="hero.titleHighlight">segura, emocionante y libre de fraude.</span>
+          </h1>
+
+          <p data-i18n="hero.subtitle">
+            Conecta empaques, tickets y piezas impresas con premios instantáneos de alta emoción. Tu cliente solo apunta la cámara nativa de su smartphone: sin descargar aplicaciones externas, con validación milimétrica en la nube y blindaje criptográfico de extremo a extremo.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#simulator" class="btn btn-primary" id="heroDemoBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span data-i18n="hero.ctaDemo">Ver Demostración en Vivo</span>
+            </a>
+            <a href="#security" class="btn btn-secondary" id="heroSecurityBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span data-i18n="hero.ctaSecurity">Cómo Funciona la Seguridad</span>
+            </a>
+          </div>
+
+          <!-- Hero Metrics Grid -->
+          <div class="hero-stats-grid" id="heroStatsContainer">
+            <!-- Rendered by JS according to locale -->
+          </div>
+        </div>
+
+        <!-- Hero Right Column: Interactive Phone Mockup -->
+        <div class="hero-mockup-wrapper">
+          <!-- Floating Badges -->
+          <div class="floating-badge floating-badge-top-left">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></div>
+            <span style="font-size: 0.775rem; font-weight: 700; color: #FFFFFF;" data-i18n="hero.phonePreview.floatingBadge1">Criptografía Blindada</span>
+          </div>
+
+          <div class="floating-badge floating-badge-bottom-right">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="font-size: 0.775rem; font-weight: 700; color: #FFFFFF;" data-i18n="hero.phonePreview.floatingBadge2">Cero Fricción (Sin Apps)</span>
+          </div>
+
+          <!-- Phone Device Frame -->
+          <div class="phone-mockup">
+            <div class="phone-inner">
+              <div class="phone-camera-notch"></div>
+              
+              <div style="text-align: center; margin-bottom: 1rem;">
+                <span class="badge badge-cyan" style="font-size: 0.7rem;" data-i18n="hero.phonePreview.status">
+                  Escaneo Criptográfico Activo
+                </span>
+                <p style="font-size: 0.75rem; color: #94A3B8; margin-top: 0.35rem;" data-i18n="hero.phonePreview.instruction">
+                  Enfoca cualquier código impreso
+                </p>
+              </div>
+
+              <!-- Animated Scan Area -->
+              <div class="phone-scan-area">
+                <div class="phone-laser-line"></div>
+                <div class="phone-qr-target" id="heroQrTarget">
+                  <!-- QR Canvas injected here -->
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 1.25rem;">
+                <div class="status-indicator" style="background: rgba(16, 185, 129, 0.15); color: #34D399;">
+                  <span class="status-dot"></span>
+                  <span data-i18n="hero.phonePreview.secureBadge">Token SHA-256 Verificado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMERCIAL ADVANTAGES SECTION -->
+    <section class="section section-light" id="benefits">
+      <div class="container">
+        <div style="text-align: center; max-width: 780px; margin: 0 auto 3.5rem auto;">
+          <span class="badge badge-cyan" data-i18n="business.badge">Impacto Comercial & ROI</span>
+          <h2 style="font-size: 2.15rem; margin-top: 0.75rem; margin-bottom: 1rem;" data-i18n="business.title">
+            Diseñado para cautivar al consumidor y blindar el presupuesto corporativo
+          </h2>
+          <p style="color: var(--slate-600); font-size: 1.05rem;" data-i18n="business.subtitle">
+            Los sorteos tradicionales en papel sufren de clonación, desconfianza y baja participación. Nuestra plataforma resuelve cada fricción con tecnología de clase bancaria.
+          </p>
+        </div>
+
+        <!-- 4 Enterprise Cards Grid -->
+        <div class="cards-grid" id="businessCardsGrid">
+          <!-- Rendered dynamically by JS for instant translation -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST & SECURITY SECTION (PLAIN LANGUAGE METAPHORS) -->
+    <section class="section section-dark bg-grid-dark" id="security">
+      <div class="container">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 3.5rem auto;">
+          <span class="badge badge-emerald" data-i18n="security.badge">Trust & Compliance Empresarial</span>
+          <h2 style="font-size: 2.15rem; margin-top: 0.75rem; margin-bottom: 1rem; color: #FFFFFF;" data-i18n="security.title">
+            Seguridad de Grado Bancario explicada en lenguaje llano
+          </h2>
+          <p style="color: var(--slate-300); font-size: 1.05rem;" data-i18n="security.subtitle">
+            Para los directores de marca y finanzas, la mayor pesadilla es la filtración de premios en imprenta o la clonación por WhatsApp. Nuestro motor elimina estos riesgos en la raíz.
+          </p>
+        </div>
+
+        <!-- 3 Core Security Pillars -->
+        <div class="security-pillars-grid" id="securityPillarsContainer">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Cryptographic Lifecycle Diagram -->
+        <div class="security-lifecycle-box">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <h3 style="font-size: 1.15rem; color: #FFFFFF;" data-i18n="security.flowTitle">Flujo de Vida Criptográfico de un Ticket</h3>
+            </div>
+            <span class="badge badge-cyan" style="font-size: 0.75rem;">SHA-256 HMAC + TLS 1.3</span>
+          </div>
+
+          <div class="lifecycle-steps" id="lifecycleStepsContainer">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENTRAL MODULE: SANDBOX SIMULATOR -->
+    <section class="section section-light" id="simulator">
+      <div class="container">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+          <span class="badge badge-gold" data-i18n="simulator.badge">Sandbox Corporativo en Vivo</span>
+          <h2 style="font-size: 2.25rem; margin-top: 0.75rem; margin-bottom: 0.75rem;" data-i18n="simulator.title">
+            Simulador Interactivo de Validación
+          </h2>
+          <p style="color: var(--slate-600); font-size: 1.05rem;" data-i18n="simulator.subtitle">
+            Experimenta en tiempo real cómo reacciona el motor de validación ante los 3 escenarios más comunes de una campaña en producción.
+          </p>
+        </div>
+
+        <!-- Simulator Sandbox Box -->
+        <div class="simulator-box">
+          <!-- Simulator Bar Header -->
+          <div class="simulator-header-bar">
+            <div class="simulator-title-group">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                <span>Sandbox Test Environment</span>
+              </h3>
+              <span data-i18n="simulator.scanExplainer">Haz clic en cualquiera de los 3 casos de prueba para disparar la llamada al servicio de validación:</span>
+            </div>
+            <div class="status-indicator">
+              <span class="status-dot"></span>
+              <span>Cluster API v1 (Latencia: 600ms)</span>
+            </div>
+          </div>
+
+          <!-- 3 Quick Presets Cards Grid -->
+          <div class="simulator-presets-grid" id="simulatorPresetsGrid">
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Manual Token Input Bar & Webcam Scanner Trigger -->
+          <div class="simulator-manual-bar">
+            <form id="manualValidateForm" class="manual-input-group">
+              <input 
+                type="text" 
+                id="manualTokenInput" 
+                placeholder="Ej: SHIELD-WIN-9021, SHIELD-TRY-4412, SHIELD-ERR-8492..." 
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <button type="submit" class="btn btn-primary" id="btnManualValidate">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span data-i18n="simulator.manualInput.validateBtn">Validar Código</span>
+              </button>
+            </form>
+
+            <button type="button" class="btn btn-secondary" id="btnToggleCamera" style="color: var(--slate-800); border-color: var(--slate-300);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span id="cameraBtnText" data-i18n="simulator.manualInput.cameraBtn">Escanear con Cámara Web / Móvil</span>
+            </button>
+          </div>
+
+          <!-- Live Camera Viewport (Hidden unless camera active) -->
+          <div class="camera-scanner-container" id="cameraContainer">
+            <p style="margin-bottom: 0.75rem; font-size: 0.85rem; color: #94A3B8;" data-i18n="simulator.manualInput.cameraNotice">
+              Coloca el código QR frente a tu lente óptico
+            </p>
+            <div class="camera-viewport" id="cameraReader">
+              <!-- Camera video element renders here -->
+            </div>
+            <div style="margin-top: 1rem;">
+              <button type="button" class="btn btn-secondary" id="btnCloseCamera" style="font-size: 0.8rem; padding: 0.4rem 1rem;">
+                ✕ <span data-i18n="simulator.manualInput.stopCameraBtn">Apagar Cámara</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabs Navigation -->
+          <div class="simulator-tabs-nav">
+            <button type="button" class="sim-tab-btn active" data-tab="ui" id="tabBtnUi">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <span data-i18n="simulator.tabs.ui">Experiencia del Usuario Final</span>
+            </button>
+            <button type="button" class="sim-tab-btn" data-tab="json" id="tabBtnJson">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span data-i18n="simulator.tabs.json">Inspector de Seguridad JSON (Dev)</span>
+            </button>
+            <button type="button" class="sim-tab-btn" data-tab="audit" id="tabBtnAudit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span data-i18n="simulator.tabs.audit">Consola de Auditoría en Tiempo Real</span>
+            </button>
+          </div>
+
+          <!-- TAB PANE 1: CONSUMER UI EXPERIENCE -->
+          <div class="simulator-tab-pane active" id="paneUi">
+            <div id="uiResultContainer">
+              <!-- Initial Ready State -->
+              <div class="result-ready">
+                <div class="result-ready-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
+                </div>
+                <h4 style="font-size: 1.15rem; color: var(--slate-700); margin-bottom: 0.5rem;" data-i18n="simulator.result.readyTitle">
+                  Esperando prueba de escaneo...
+                </h4>
+                <p style="font-size: 0.9rem; max-width: 480px; margin: 0 auto;" data-i18n="simulator.result.readyDesc">
+                  Selecciona uno de los casos anteriores, escribe un token o activa el lector de cámara para ver el veredicto en tiempo real.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB PANE 2: JSON SECURITY INSPECTOR -->
+          <div class="simulator-tab-pane" id="paneJson">
+            <div class="code-viewer-container">
+              <div class="code-header-meta">
+                <span id="jsonHttpStatusBadge" class="badge badge-emerald">HTTP 200 OK</span>
+                <span id="jsonLatencyMeta" style="color: #94A3B8;">Latencia: 604ms</span>
+                <span id="jsonTraceMeta" style="color: #38BDF8;">Trace ID: TRX-INIT</span>
+                <button type="button" class="btn btn-secondary" id="btnCopyJson" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;">
+                  Copiar Payload
+                </button>
+              </div>
+              <pre id="jsonPayloadPre"><code>// Ejecuta una validación para inspeccionar las cabeceras criptográficas y el contrato JSON devuelto por la API.</code></pre>
+            </div>
+          </div>
+
+          <!-- TAB PANE 3: AUDIT CONSOLE -->
+          <div class="simulator-tab-pane" id="paneAudit">
+            <div class="audit-table-wrapper">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="simulator.auditTable.colTimestamp">Hora UTC</th>
+                    <th data-i18n="simulator.auditTable.colToken">Token Evaluado</th>
+                    <th data-i18n="simulator.auditTable.colStatus">Veredicto</th>
+                    <th data-i18n="simulator.auditTable.colLatency">Latencia</th>
+                    <th data-i18n="simulator.auditTable.colAction">Detalle</th>
+                  </tr>
+                </thead>
+                <tbody id="auditTableBody">
+                  <tr>
+                    <td colspan="5" style="text-align: center; color: var(--slate-500); padding: 2.5rem;" data-i18n="simulator.auditTable.empty">
+                      No hay eventos registrados en esta sesión aún. Dispara un escaneo arriba.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMERCIAL CLOSING / CTA SECTION -->
+    <section class="section section-dark bg-grid-dark" id="cta">
+      <div class="container" style="text-align: center; max-width: 820px; margin: 0 auto;">
+        <span class="badge badge-emerald" data-i18n="ctaSection.badge">Lanzamiento Inmediato</span>
+        <h2 style="font-size: 2.35rem; color: #FFFFFF; margin-top: 1rem; margin-bottom: 1.25rem;" data-i18n="ctaSection.title">
+          ¿Listo para lanzar tu campaña de alto impacto?
+        </h2>
+        <p style="font-size: 1.1rem; color: var(--slate-300); margin-bottom: 2.5rem;" data-i18n="ctaSection.subtitle">
+          La arquitectura modular de este prototipo está lista para desplegarse con tus reglas de negocio, cupos de premios e identidad de marca. Sin empezar desde cero.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem;">
+          <button type="button" class="btn btn-emerald" id="btnOpenProposalModal" style="font-size: 1rem; padding: 0.8rem 1.8rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span data-i18n="ctaSection.btnContact">Solicitar Propuesta Formal</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="btnOpenArchModal" style="font-size: 1rem; padding: 0.8rem 1.8rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span data-i18n="ctaSection.btnArch">Ver Especificación de API</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CORPORATE FOOTER -->
+  <footer class="footer-corporate">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-link" style="margin-bottom: 1rem;">
+            <div class="brand-logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div class="brand-text">
+              <span style="font-size: 1.1rem; font-weight: 800; color: #FFFFFF;" data-i18n="nav.brand">QR Shield Promo</span>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--slate-400); max-width: 320px; line-height: 1.5;" data-i18n="footer.brandDesc">
+            Plataforma corporativa de sorteos inteligentes, promociones dinámicas y validación criptográfica de códigos QR para consumo masivo y retail.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footer.col1Title">Soluciones</h4>
+          <ul class="footer-links" id="footerSolList">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footer.col2Title">Cumplimiento & Seguridad</h4>
+          <ul class="footer-links" id="footerCompList">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="footer.rights">© 2026 QR Shield Promo. Todos los derechos reservados. Arquitectura Enterprise para Sorteos Seguros.</p>
+        <div style="display: flex; gap: 1.5rem; font-size: 0.8rem;">
+          <span style="color: #34D399; display: flex; align-items: center; gap: 0.4rem;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399;"></span>
+            SOC2 Type II Ready
+          </span>
+          <span style="color: #38BDF8;">ISO 27001 Compliant</span>
+          <span style="color: #FBBF24;">GDPR & Privacy Protected</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       MODALS (Native Dialogs with Backdrop & Light Dismiss)
+       ========================================================================= -->
+
+  <!-- Modal 1: Secure Prize Claim Form & Voucher Generator -->
+  <dialog id="claimModal" class="custom-modal">
+    <div class="modal-content-box">
+      <div class="modal-header">
+        <div>
+          <h3 data-i18n="claimModal.title">Formulario de Canje Seguro</h3>
+          <span style="font-size: 0.775rem; color: #94A3B8;" data-i18n="claimModal.subtitle">Ingresa tus datos para vincular el premio de forma intransferible a tu documento de identidad:</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseClaimModal" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body" id="claimModalBody">
+        <div id="claimFormStep">
+          <div style="background: var(--slate-100); border: 1px solid var(--slate-200); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.35rem;">
+              <span style="color: var(--slate-600);" data-i18n="claimModal.tokenLabel">Código Validado:</span>
+              <strong id="modalClaimTokenDisplay" class="font-mono" style="color: #0284C7;">SHIELD-WIN-9021</strong>
+            </div>
+            <div style="font-size: 0.85rem;">
+              <span style="color: var(--slate-600);" data-i18n="claimModal.prizeLabel">Premio Ganado:</span>
+              <strong id="modalClaimPrizeDisplay" style="color: var(--slate-900); display: block; margin-top: 0.25rem;"></strong>
+            </div>
+          </div>
+
+          <form id="claimPrizeForm">
+            <div class="form-group">
+              <label for="claimFullName" data-i18n="claimModal.fullName">Nombre Completo</label>
+              <input type="text" id="claimFullName" required placeholder="Ej. Viviana Gómez Morales">
+            </div>
+
+            <div class="form-group">
+              <label for="claimIdNumber" data-i18n="claimModal.idNumber">Documento de Identidad / Cédula / DNI</label>
+              <input type="text" id="claimIdNumber" required placeholder="Ej. 1020304050">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label for="claimEmail" data-i18n="claimModal.email">Correo Electrónico</label>
+                <input type="email" id="claimEmail" required placeholder="viviana@empresa.com">
+              </div>
+              <div class="form-group">
+                <label for="claimPhone" data-i18n="claimModal.phone">Teléfono Móvil</label>
+                <input type="tel" id="claimPhone" required placeholder="+57 300 123 4567">
+              </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--slate-600); display: flex; align-items: flex-start; gap: 0.5rem;">
+              <input type="checkbox" id="claimTerms" checked style="margin-top: 3px;">
+              <label for="claimTerms" data-i18n="claimModal.terms">Acepto los términos y condiciones de la promoción y el tratamiento de datos personales.</label>
+            </div>
+
+            <button type="submit" class="btn btn-emerald" style="width: 100%; padding: 0.75rem;" id="btnSubmitClaim">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 15 10"/></svg>
+              <span data-i18n="claimModal.submitBtn">Emitir Comprobante de Canje Digital</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Voucher Success Display -->
+        <div id="claimVoucherSuccess" style="display: none;">
+          <div style="text-align: center; margin-bottom: 1.25rem;">
+            <div style="width: 3.5rem; height: 3.5rem; border-radius: 50%; background: rgba(16, 185, 129, 0.15); color: #10B981; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h4 style="font-size: 1.15rem; color: #059669; margin-bottom: 0.35rem;" data-i18n="claimModal.voucherSuccessTitle">
+              Comprobante de Canje Emitido con Éxito
+            </h4>
+            <p style="font-size: 0.85rem; color: var(--slate-600);" data-i18n="claimModal.voucherSuccessDesc">
+              El premio ha sido asignado formalmente a tu nombre en la base de datos central. Presenta este comprobante digital en el punto de entrega:
+            </p>
+          </div>
+
+          <div class="voucher-ticket">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.2); padding-bottom: 0.75rem;">
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: #38BDF8;" data-i18n="claimModal.voucherCode">CÓDIGO DE RETIRO AUTORIZADO:</span>
+              <strong id="voucherCodeDisplay" class="font-mono" style="font-size: 1.1rem; color: #FBBF24;">VCH-9021-SECURE</strong>
+            </div>
+
+            <div style="margin-bottom: 0.75rem; font-size: 0.85rem;">
+              <div style="color: #94A3B8;">Titular Acreditado:</div>
+              <strong id="voucherHolderName" style="color: #FFFFFF; font-size: 1rem;"></strong>
+              <div id="voucherHolderId" style="color: #94A3B8; font-size: 0.8rem;"></div>
+            </div>
+
+            <div style="margin-bottom: 1rem; font-size: 0.85rem;">
+              <div style="color: #94A3B8;" data-i18n="claimModal.prizeLabel">Premio:</div>
+              <strong id="voucherPrizeName" style="color: #34D399;"></strong>
+            </div>
+
+            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.725rem; font-family: var(--font-mono); color: #94A3B8; word-break: break-all;">
+              <span data-i18n="claimModal.hashLabel">Hash de Auditoría SHA-256:</span>
+              <div id="voucherHashDisplay" style="color: #E2E8F0; margin-top: 0.2rem;"></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+            <button type="button" class="btn btn-outline-dark" style="flex: 1;" id="btnCloseVoucherDone" data-i18n="claimModal.closeBtn">
+              Finalizar y Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 2: Architecture & API Specs (For IT / CTOs) -->
+  <dialog id="archModal" class="custom-modal" style="max-width: 720px;">
+    <div class="modal-content-box">
+      <div class="modal-header">
+        <div>
+          <h3 data-i18n="archModal.title">Especificación de Arquitectura & Integración API</h3>
+          <span style="font-size: 0.775rem; color: #94A3B8;" data-i18n="archModal.subtitle">Diseñado para pasar de este Sandbox a tu infraestructura Cloud en minutos.</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseArchModal" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div style="background: rgba(14, 165, 233, 0.1); border-left: 4px solid #0EA5E9; padding: 0.85rem 1rem; border-radius: 0.35rem; margin-bottom: 1.25rem; font-size: 0.825rem; color: var(--slate-800);" data-i18n="archModal.callout">
+          Nota para Desarrolladores: Este prototipo ya implementa la capa mockValidatorService.js. Para conectar tu base de datos PostgreSQL, MongoDB o microservicio Express/Spring Boot, solo debes sustituir el método mock por la URL de tu API real.
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;" data-i18n="archModal.endpoint1">1. Validación Atómica de Token</h4>
+        <div class="code-viewer-container" style="margin-bottom: 1.25rem;">
+<pre><code>POST /api/v1/tokens/validate
+Host: api.tuempresa.com
+Authorization: Bearer &lt;CLIENT_TOKEN&gt;
+Content-Type: application/json
+
+// Request Body:
+{
+  "token": "SHIELD-WIN-9021",
+  "clientTimestamp": "2026-10-28T14:30:00Z",
+  "deviceFingerprint": "Mozilla/5.0...",
+  "geoLatLong": null // Opcional
+}
+
+// 200 OK Response (Ganador):
+{
+  "success": true,
+  "verdict": "WINNER",
+  "prize": { "id": "PRZ-9021", "title": "Smart TV 65\"..." },
+  "signature": "sha256_e4b8...",
+  "traceId": "TRX-9021-SECURE"
+}</code></pre>
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;" data-i18n="archModal.endpoint2">2. Canje y Asignación de Premio</h4>
+        <div class="code-viewer-container" style="margin-bottom: 1.25rem;">
+<pre><code>POST /api/v1/tokens/redeem
+Host: api.tuempresa.com
+Content-Type: application/json
+
+// Request Body:
+{
+  "token": "SHIELD-WIN-9021",
+  "winner": {
+    "fullName": "Viviana Gómez",
+    "idNumber": "1020304050",
+    "email": "viviana@empresa.com",
+    "phone": "+57 300 123 4567"
+  }
+}</code></pre>
+        </div>
+
+        <button type="button" class="btn btn-primary" style="width: 100%;" id="btnCloseArchBottom" data-i18n="archModal.close">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 3: Commercial Proposal Request -->
+  <dialog id="contactModal" class="custom-modal">
+    <div class="modal-content-box">
+      <div class="modal-header">
+        <div>
+          <h3 data-i18n="ctaSection.contactModalTitle">Solicitar Propuesta Comercial</h3>
+          <span style="font-size: 0.775rem; color: #94A3B8;" data-i18n="ctaSection.contactModalSubtitle">Cuéntanos sobre tu campaña y te entregaremos una cotización personalizada en menos de 24 horas.</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseContactModal" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="contactProposalForm">
+          <div class="form-group">
+            <label for="contactCompany" data-i18n="ctaSection.company">Empresa / Marca</label>
+            <input type="text" id="contactCompany" required placeholder="Ej: Corporación CPG Internacional">
+          </div>
+
+          <div class="form-group">
+            <label for="contactVolume" data-i18n="ctaSection.volume">Volumen estimado de códigos</label>
+            <select id="contactVolume" required>
+              <option value="10k-100k" data-i18n="ctaSection.volumeOption1">10,000 a 100,000 códigos</option>
+              <option value="100k-1m" data-i18n="ctaSection.volumeOption2">100,000 a 1,000,000 códigos</option>
+              <option value="1m+" data-i18n="ctaSection.volumeOption3">Más de 1,000,000 (Campaña Nacional)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail" data-i18n="claimModal.email">Correo Corporativo</label>
+            <input type="email" id="contactEmail" required placeholder="contacto@tuempresa.com">
+          </div>
+
+          <div id="contactSuccessMsg" style="display: none; background: rgba(16, 185, 129, 0.12); color: #059669; padding: 0.85rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.85rem;" data-i18n="ctaSection.sentSuccess">
+            ¡Solicitud enviada con éxito! Nuestro equipo de arquitectura y negocios te contactará a la brevedad.
+          </div>
+
+          <button type="submit" class="btn btn-emerald" style="width: 100%;" id="btnSubmitProposal">
+            <span data-i18n="ctaSection.sendBtn">Enviar Solicitud</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 4: Operations Center - Batch Generator, Excel & Branding -->
+  <dialog id="batchModal" class="custom-modal" style="max-width: 860px;">
+    <div class="modal-content-box">
+      <div class="modal-header">
+        <div>
+          <h3 data-i18n="batchModal.title">Centro de Operaciones: Generador Masivo, Excel & Personalización</h3>
+          <span style="font-size: 0.775rem; color: #94A3B8;" data-i18n="batchModal.subtitle">Personaliza la marca del cliente, genera lotes de tokens y expórtalos en Excel o planillas listas para imprenta.</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseBatchModal" aria-label="Close modal">✕</button>
+      </div>
+
+      <!-- Batch Modal Tabs -->
+      <div class="simulator-tabs-nav" style="background: var(--slate-100); border-bottom: 1px solid var(--slate-200);">
+        <button type="button" class="sim-tab-btn active" id="btnBatchTabTheme" data-batch-tab="theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0 0-20"/></svg>
+          <span data-i18n="batchModal.tab1">Personalización de Marca</span>
+        </button>
+        <button type="button" class="sim-tab-btn" id="btnBatchTabCsv" data-batch-tab="csv">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          <span data-i18n="batchModal.tab2">Generador Masivo (Excel / CSV)</span>
+        </button>
+        <button type="button" class="sim-tab-btn" id="btnBatchTabPrint" data-batch-tab="print">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span data-i18n="batchModal.tab3">Planilla de Impresión / PDF</span>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.5rem 1.75rem;">
+        <!-- TAB 1: THEME & BRANDING -->
+        <div id="batchPaneTheme" class="batch-pane active">
+          <div style="background: rgba(14, 165, 233, 0.08); border-left: 4px solid var(--cyan-500); padding: 0.85rem 1rem; border-radius: 0.35rem; margin-bottom: 1.25rem; font-size: 0.825rem; color: var(--slate-800);">
+            💡 <strong>Demostración para el Cliente:</strong> Puedes cambiar el nombre de la empresa y la paleta de color para mostrarle en vivo cómo lucirá su landing personalizada sin tocar código.
+          </div>
+
+          <form id="brandCustomForm" onsubmit="return false;">
+            <div class="form-group">
+              <label for="brandNameInput" data-i18n="batchModal.brandName">Nombre de la Marca / Cliente</label>
+              <input type="text" id="brandNameInput" placeholder="Ej. Refrescos Andina, Banco Continental, Supertiendas..." value="Refrescos Andina">
+            </div>
+
+            <div class="form-group">
+              <label data-i18n="batchModal.brandColor">Color Primario de Campaña</label>
+              <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <button type="button" class="color-preset-btn active" data-color="#0B192C" style="background: #0B192C; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #FFFFFF; box-shadow: 0 0 0 2px #0EA5E9; cursor: pointer;" title="Navy Institucional"></button>
+                <button type="button" class="color-preset-btn" data-color="#DC2626" style="background: #DC2626; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #FFFFFF; cursor: pointer;" title="Rojo Pasión / Bebidas"></button>
+                <button type="button" class="color-preset-btn" data-color="#059669" style="background: #059669; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #FFFFFF; cursor: pointer;" title="Verde Retail / Farmacia"></button>
+                <button type="button" class="color-preset-btn" data-color="#D97706" style="background: #D97706; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #FFFFFF; cursor: pointer;" title="Dorado Premium"></button>
+                <button type="button" class="color-preset-btn" data-color="#4F46E5" style="background: #4F46E5; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #FFFFFF; cursor: pointer;" title="Indigo Tech / Fintech"></button>
+                <input type="color" id="brandCustomColor" value="#0EA5E9" style="width: 40px; height: 34px; padding: 0; border: none; border-radius: 6px; cursor: pointer;">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="headlineCustomInput" data-i18n="batchModal.headlineCustom">Titular de Campaña Personalizado</label>
+              <input type="text" id="headlineCustomInput" placeholder="Ej. ¡Destapa, escanea y gana al instante!" value="¡Destapa tu producto, escanea el código y gana al instante!">
+            </div>
+
+            <div id="themeSuccessMsg" style="display: none; background: rgba(16, 185, 129, 0.12); color: #059669; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.85rem;" data-i18n="batchModal.themeSuccess">
+              ¡Identidad de marca aplicada en tiempo real a la plataforma!
+            </div>
+
+            <button type="button" class="btn btn-primary" id="btnApplyTheme" style="width: 100%;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span data-i18n="batchModal.applyTheme">Aplicar Tema en Vivo a la Landing</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 2: MASSIVE BATCH GENERATOR (EXCEL / CSV) -->
+        <div id="batchPaneCsv" class="batch-pane" style="display: none;">
+          <div style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid var(--emerald-500); padding: 0.85rem 1rem; border-radius: 0.35rem; margin-bottom: 1.25rem; font-size: 0.825rem; color: var(--slate-800);" data-i18n="batchModal.csvExplainer">
+            Estándar universal VDP (Variable Data Printing). Compatible con prensas digitales HP Indigo, Fiery, Domino, Mark Andy e impresoras de etiquetas.
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="batchPrefixInput" data-i18n="batchModal.batchPrefix">Prefijo de Campaña</label>
+              <input type="text" id="batchPrefixInput" value="ANDINA" style="font-family: var(--font-mono); text-transform: uppercase;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="batchQtySelect" data-i18n="batchModal.batchQuantity">Cantidad de Tokens a Generar</label>
+              <select id="batchQtySelect">
+                <option value="12">12 Códigos (1 Hoja de prueba)</option>
+                <option value="24" selected>24 Códigos (Planilla estándar)</option>
+                <option value="50">50 Códigos (Muestra comercial)</option>
+                <option value="100">100 Códigos (Lote piloto)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem;">
+            <button type="button" class="btn btn-secondary" id="btnGenerateBatchAction" style="flex: 1; color: var(--slate-800); border-color: var(--slate-300);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span data-i18n="batchModal.btnGenerate">Generar Lote Criptográfico</span>
+            </button>
+            <button type="button" class="btn btn-emerald" id="btnDownloadCsvAction" style="flex: 1.3;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span data-i18n="batchModal.btnExportCsv">Descargar Listado en Excel / CSV</span>
+            </button>
+          </div>
+
+          <!-- Batch Preview Table -->
+          <div style="max-height: 240px; overflow-y: auto; border: 1px solid var(--slate-200); border-radius: 0.5rem;">
+            <table class="audit-table" style="font-size: 0.775rem;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Token Criptográfico</th>
+                  <th>URL de Escaneo Codificada</th>
+                  <th>Tipo Asignado</th>
+                  <th>Hash SHA-256</th>
+                </tr>
+              </thead>
+              <tbody id="batchTableBody">
+                <!-- Generated rows will inject here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3: PRINT SHEET / PDF GENERATOR -->
+        <div id="batchPanePrint" class="batch-pane" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <span style="font-size: 0.825rem; color: var(--slate-600);" data-i18n="batchModal.printExplainer">
+              Cuadrícula optimizada para corte en pliegos carta/A4, etiquetas adhesivas o boletos de rifa con resolución nítida de 300 DPI.
+            </span>
+            <button type="button" class="btn btn-primary" id="btnPrintSheetAction" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              <span>Imprimir / Guardar en PDF</span>
+            </button>
+          </div>
+
+          <!-- Printable Sheet Area -->
+          <div id="printSheetWrapper" style="max-height: 400px; overflow-y: auto; background: var(--slate-100); padding: 1.5rem; border-radius: 0.75rem; border: 1px dashed var(--slate-300);">
+            <div id="printSheetGrid" class="print-sheet-grid">
+              <!-- Dynamically populated with tickets -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Main Application Logic Entry Point -->
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
